@@ -9,10 +9,7 @@ A decentralized offline echo-conference network (in the spirit of Fidonet and th
 <hr>
 <div align="center">
 ### Donation
-| Валюта / Currency / 貨幣 | Адрес кошелька / Wallet address / 錢包地址 |
-| :---: | :--- |
-| <img src="https://flaticon.com" alt="BTC" width="24" height="24" valign="middle"> **Bitcoin BTC** | `bc1q7gz0gn6hjpcad4yvmq9t47sqv5tk2zw9kfxkpp` |
-| <img src="https://flaticon.com" alt="ETH" width="24" height="24" valign="middle"> **Ethereum ETH** | `0x0d314367843b66f1624038311eB2cC71E8aB18FB` |
-| <img src="https://flaticon.com" alt="DOGE" width="24" height="24" valign="middle"> **Dogecoin DOGE** | `DRWiaueKWB5uJQNsxWVomDfnEvthRtfYpm` |
-
+Bitcoin BTC <img src="https://cdn-icons-png.flaticon.com/128/5968/5968260.png" alt="BTC" width="30" height="30"> - bc1q7gz0gn6hjpcad4yvmq9t47sqv5tk2zw9kfxkpp
+Ethereum ETH <img src="https://cdn-icons-png.flaticon.com/128/18380/18380911.png" alt="ETH" width="30" height="30">- 0x0d314367843b66f1624038311eB2cC71E8aB18FB
+Dogecoin DOGE <img src="https://cdn-icons-png.flaticon.com/128/14480/14480019.png" alt="DOGE" width="30" height="30">- DRWiaueKWB5uJQNsxWVomDfnEvthRtfYpm
 </div>
