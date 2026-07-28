@@ -11,17 +11,17 @@ A decentralized offline echo-conference network (in the spirit of Fidonet and th
 <table>
   <tr>
     <td>Bitcoin BTC</td>
-    <td><img src="https://flaticon.com" alt="BTC" width="30" height="30"></td>
+    <td><img src="https://cdn-icons-png.flaticon.com/128/5968/5968260.png" alt="BTC" width="30" height="30"></td>
     <td>bc1q7gz0gn6hjpcad4yvmq9t47sqv5tk2zw9kfxkpp</td>
   </tr>
   <tr>
     <td>Ethereum ETH</td>
-    <td><img src="https://flaticon.com" alt="ETH" width="30" height="30"></td>
+    <td><img src="https://cdn-icons-png.flaticon.com/128/18380/18380911.png" alt="ETH" width="30" height="30"></td>
     <td>0x0d314367843b66f1624038311eB2cC71E8aB18FB</td>
   </tr>
   <tr>
     <td>Dogecoin DOGE</td>
-    <td><img src="https://flaticon.com" alt="DOGE" width="30" height="30"></td>
+    <td><img src="https://cdn-icons-png.flaticon.com/128/14480/14480019.png" alt="DOGE" width="30" height="30"></td>
     <td>DRWiaueKWB5uJQNsxWVomDfnEvthRtfYpm</td>
   </tr>
 </table>
