@@ -24,7 +24,7 @@ A decentralized offline echo-conference network (in the spirit of Fidonet and th
   </tr>
   <tr>
     <td>Dogecoin DOGE</td>
-    <td><img src="https://cdn-icons-png.flaticon.com/128/14480/14480019.png" alt="DOGE" width="30" height="30"></td>
+    <td><img src="https://cdn-icons-png.flaticon.com/128/7383/7383117.png" alt="DOGE" width="30" height="30"></td>
     <td>DRWiaueKWB5uJQNsxWVomDfnEvthRtfYpm</td>
   </tr>
 </table>
