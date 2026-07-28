@@ -9,8 +9,8 @@ A decentralized offline echo-conference network (in the spirit of Fidonet and th
 <hr>
 Donation:
 
-Bitcoin BTC ₿ - bc1q7gz0gn6hjpcad4yvmq9t47sqv5tk2zw9kfxkpp
+Bitcoin BTC <img src="https://cdn-icons-png.flaticon.com/128/5968/5968260.png" alt="BTC" width="35" height="35"> - bc1q7gz0gn6hjpcad4yvmq9t47sqv5tk2zw9kfxkpp
 
-Ethereum ETH Ξ - 0x0d314367843b66f1624038311eB2cC71E8aB18FB
+Ethereum ETH <img src="https://cdn-icons-png.flaticon.com/128/18380/18380911.png" alt="ETH" width="35" height="35"> - 0x0d314367843b66f1624038311eB2cC71E8aB18FB
 
-Dogecoin DOGE Ð - DRWiaueKWB5uJQNsxWVomDfnEvthRtfYpm
+Dogecoin DOGE <img src="https://cdn-icons-png.flaticon.com/128/14480/14480019.png" alt="DOGE" width="35" height="35"> - DRWiaueKWB5uJQNsxWVomDfnEvthRtfYpm
