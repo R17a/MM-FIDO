@@ -1,6 +1,5 @@
 # Meshtastic ───●──●──● 🐕 FIDO
 <hr>
-<br>
 Децентрализованная оффлайн-сеть эхоконференций (в духе Fidonet и редактора GoldED) поверх физического радиопротокола Meshtastic (LoRa), с архитектурой фонового тоссинга (синхронизации) в локальную базу данных и криптографической системой модерации.
 
 A decentralized offline echo-conference network (in the spirit of Fidonet and the GoldED editor) running over the physical Meshtastic (LoRa) radio protocol, featuring a background tossing (synchronization) architecture that writes to a local database and a cryptographic moderation system.
