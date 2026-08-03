@@ -18,22 +18,13 @@ Meshtastic-FIDO 是一个基于经典 FidoNet / GoldED 编辑器理念、构建�
 类型之间的区别由**设备角色**决定（见第 2 节），以及该节点是否运行向邻近
 节点分发历史消息的后台服务。
 
-```
-●CLIENT ◄──LoRa──► ●CLIENT ◄──LoRa──► ■CLIENT_BASE ◄──LoRa──► ●CLIENT (TRACKER/SENSOR/…)
-                                            │
-                                          LoRa
-                                            │
-                                            ▼
-                                  ▲ROUTER / ROUTER_LATE ◄──LoRa──► ( 互联网上行链路 )
-                                                                     连接其他
-                                                                     网络分段
+<img src="https://github.com/R17a/Meshtastic_FIDO/blob/main/images/topology.ZH.svg">
 
-  任意两个处于无线电通信范围内的节点都通过 LoRa 直接连接——网络是扁平的，
-  没有层级结构，也没有唯一的必经中介。图中之所以单独标出 CLIENT_BASE 和
-  ROUTER，并非因为流量必须经过它们，而是因为它们额外承担了服务职能：
-  CLIENT_BASE 保存历史消息缓存供补收使用，ROUTER 执行优先中继，扩大网络
-  覆盖范围（包括通过一连串中继节点到达直接无法触及的节点）。
-```
+任意两个处于无线电通信范围内的节点都通过 LoRa 直接连接——网络是扁平的，
+没有层级结构，也没有唯一的必经中介。图中之所以单独标出 CLIENT_BASE 和
+ROUTER，并非因为流量必须经过它们，而是因为它们额外承担了服务职能：
+CLIENT_BASE 保存历史消息缓存供补收使用，ROUTER 执行优先中继，扩大网络
+覆盖范围（包括通过一连串中继节点到达直接无法触及的节点）。
 
 ### 普通客户端（网络用户）
 标准参与者：通过 TUI 阅读和撰写信区邮件与 netmail，订阅信区并回复消息。
@@ -59,23 +50,7 @@ Meshtastic-FIDO 是一个基于经典 FidoNet / GoldED 编辑器理念、构建�
 
 角色从所连接的 Meshtastic 设备固件中读取，并决定该节点在网络中的行为：
 
-| 角色             | 用途                                                              | 类别 |
-|------------------|---------------------------------------------------------------------|------|
-| `CLIENT`         | 普通客户端设备（默认）                                              | 客户端类 |
-| `CLIENT_MUTE`    | 不转发其他设备的数据包                                              | 客户端类 |
-| `CLIENT_HIDDEN`  | 隐蔽/省电模式，将无线电活跃度降到最低                                | 客户端类 |
-| `TRACKER`        | 优先广播 GPS 定位数据包                                             | 客户端类 |
-| `SENSOR`         | 优先广播传感器遥测数据包                                            | 客户端类 |
-| `TAK`            | 与 ATAK 系统集成                                                    | 客户端类 |
-| `TAK_TRACKER`    | ATAK + 自动 PLI 位置信标                                            | 客户端类 |
-| `LOST_AND_FOUND` | 定期广播位置信息——用于寻回丢失的设备                                | 客户端类 |
-| `ROUTER`         | 基础设施中继节点，在节点列表中可见                                   | 基础设施类 |
-| `ROUTER_LATE`    | 低优先级中继——最后才启动转发，用于覆盖局部集群                       | 基础设施类 |
-| `CLIENT_BASE`    | 个人基站——用于补收历史消息的缓存节点                                 | 基础设施类 |
-
-网络同样识别带有 `ROUTER_CLIENT` 和 `REPEATER` 角色的节点——这是基础设施
-角色较早期的变体，出现在运行较旧版本 Meshtastic 固件的设备上——并将其与
-`ROUTER` / `ROUTER_LATE` / `CLIENT_BASE` 同等对待。
+<img src="https://github.com/R17a/Meshtastic_FIDO/blob/main/images/roles.ZH.svg">
 
 ### 角色如何影响网络行为
 - 每个节点——无论客户端类还是基础设施类——都独立地在自己的本地数据库中
