@@ -22,7 +22,7 @@ it's the same TUI application — the difference between types is defined by
 the **device role** (see section 2) and whether the node runs a background
 service that shares history with neighbors.
 
-https://github.com/R17a/Meshtastic_FIDO/blob/main/images/topology.EN.svg
+<img src="https://github.com/R17a/Meshtastic_FIDO/blob/main/images/topology.EN.svg">
 
 Any two nodes within radio range connect over LoRa directly — the network
 is flat, with no hierarchy and no single mandatory intermediary. CLIENT_BASE
@@ -61,7 +61,7 @@ network segments or into a common backbone.
 The role is read from the firmware of the connected Meshtastic device and
 determines the node's behavior in the network:
 
-https://github.com/R17a/Meshtastic_FIDO/blob/main/images/roles.EN.svg
+<img src="https://github.com/R17a/Meshtastic_FIDO/blob/main/images/roles.EN.svg">
 
 ### How the role affects network behavior
 - Every node — client or infrastructure — independently stores its own mail
