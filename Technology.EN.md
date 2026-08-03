@@ -115,6 +115,45 @@ which brings them within the LoRa radio channel's MTU limits and reassembles
 them on receipt — the same path for every message, with no special cases.
 
 The network is decentralized at the delivery level: live messages propagate
-by broadcast relaying over the air, with no dependency on one specific node,
-and catch-up of missed history is served by any available infrastructure
-node, not a single fixed one.
+by broadcast relaying over the air, with no dependency on one specific node.
+Catch-up of missed history is bidirectional as well: when two nodes meet over
+the air (for example, a client that spent time without a reachable
+infrastructure node meets one, or meets another client), they exchange
+whatever messages the other one is missing in both directions — not just
+"the client pulls from the hub." Either side can serve the catch-up; it isn't
+tied to a single fixed node.
+
+Beyond packing and fragmentation themselves, the same pipeline also saves
+airtime and stays resilient under channel congestion: protocol-aware
+compression, send ordering under airtime congestion, protection against the
+same packet being relayed in an endless loop, and compact representations
+for large history lists. Like the frame format, the details of these
+mechanisms remain part of `PackerEngine`'s closed implementation and aren't
+disclosed here.
+
+---
+
+## 4. Message Authenticity and Privacy
+
+Every message is signed on the sending node with the app's own key pair (not
+the radio module's hardware key), generated locally on first launch. Any
+receiving node — including infrastructure nodes that relay and cache
+history — independently re-verifies the signature rather than trusting
+someone else's verification flag. If the signature doesn't check out, the
+message isn't silently dropped; it's marked `[UNVERIFIED]` in the interface,
+so the reader can see the sender's authenticity hasn't been confirmed.
+
+Personal mail (netmail with a known recipient) is additionally encrypted
+with a separate key pair, independent from the signing key — following
+common practice (the same principle used by PGP/SSH/Signal: a signing key
+and an encryption key are never reused for each other). One consequence:
+an infrastructure node that caches and relays someone else's personal mail
+is physically unable to read its body — it simply doesn't hold the actual
+recipient's private key.
+
+Nodes exchange encryption keys using TOFU (trust-on-first-use, as in
+SSH/PGP): the sender's public encryption key rides along with every signed
+message, and the receiving side remembers it the first time it's seen. On a
+later mismatch, the key is not silently overwritten — the same fundamental
+trade-off any TOFU scheme makes (the impersonation risk exists only at the
+very first encounter between two nodes).
