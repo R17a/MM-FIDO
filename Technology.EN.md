@@ -22,24 +22,15 @@ it's the same TUI application — the difference between types is defined by
 the **device role** (see section 2) and whether the node runs a background
 service that shares history with neighbors.
 
-```
-●CLIENT ◄──LoRa──► ●CLIENT ◄──LoRa──► ■CLIENT_BASE ◄──LoRa──► ●CLIENT (TRACKER/SENSOR/…)
-                                            │
-                                          LoRa
-                                            │
-                                            ▼
-                                  ▲ROUTER / ROUTER_LATE ◄──LoRa──► ( Internet uplink )
-                                                                     bridge to other
-                                                                     network segments
+https://github.com/R17a/Meshtastic_FIDO/blob/main/images/topology.EN.svg
 
-  Any two nodes within radio range connect over LoRa directly — the network
-  is flat, with no hierarchy and no single mandatory intermediary. CLIENT_BASE
-  and ROUTER are called out separately not because traffic must pass through
-  them, but because they additionally carry a service load: CLIENT_BASE holds
-  a history cache for catch-up, ROUTER performs priority relaying that extends
-  network reach (including to nodes outside direct range — via a chain of
-  intermediate relays).
-```
+Any two nodes within radio range connect over LoRa directly — the network
+is flat, with no hierarchy and no single mandatory intermediary. CLIENT_BASE
+and ROUTER are called out separately not because traffic must pass through
+them, but because they additionally carry a service load: CLIENT_BASE holds
+a history cache for catch-up, ROUTER performs priority relaying that extends
+network reach (including to nodes outside direct range — via a chain of
+intermediate relays).
 
 ### Regular client (network operator)
 The standard participant: reads and writes echomail and netmail through the
@@ -70,24 +61,7 @@ network segments or into a common backbone.
 The role is read from the firmware of the connected Meshtastic device and
 determines the node's behavior in the network:
 
-| Role             | Purpose                                                              | Category |
-|------------------|------------------------------------------------------------------------|----------|
-| `CLIENT`         | Regular client device (default)                                       | client |
-| `CLIENT_MUTE`    | Does not relay other devices' packets                                 | client |
-| `CLIENT_HIDDEN`  | Stealth / power-saving mode, minimal airtime activity                 | client |
-| `TRACKER`        | Prioritizes GPS position packets                                      | client |
-| `SENSOR`         | Prioritizes telemetry packets                                         | client |
-| `TAK`            | Integration with the ATAK system                                      | client |
-| `TAK_TRACKER`    | ATAK + automatic PLI position beacons                                 | client |
-| `LOST_AND_FOUND` | Regularly broadcasts location — for recovering a lost device          | client |
-| `ROUTER`         | Infrastructure relay, visible in the node list                        | infrastructure |
-| `ROUTER_LATE`    | Low-priority relay — activates last, extends coverage for local clusters | infrastructure |
-| `CLIENT_BASE`    | Personal base station — cache node for catch-up sync                  | infrastructure |
-
-The network also recognizes nodes with the `ROUTER_CLIENT` and `REPEATER`
-roles — earlier variants of the infrastructure role found on devices running
-older versions of Meshtastic firmware — and treats them on par with
-`ROUTER` / `ROUTER_LATE` / `CLIENT_BASE`.
+https://github.com/R17a/Meshtastic_FIDO/blob/main/images/roles.EN.svg
 
 ### How the role affects network behavior
 - Every node — client or infrastructure — independently stores its own mail
