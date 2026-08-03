@@ -1,0 +1,106 @@
+<svg viewBox="0 0 980 640" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', Helvetica, Arial, sans-serif">
+  <style>
+    .card { fill:#f7f8fa; stroke:#d7dbe0; }
+    .note { fill:#5b6472; font-style:italic; }
+    .section { fill:#1f2430; font-weight:700; }
+    .zebra { fill:#eceef1; }
+    .purpose { fill:#2c313b; }
+    .role-client { fill:#e3ecfd; stroke:#2f6fed; }
+    .role-client-text { fill:#1949b3; }
+    .role-infra { fill:#efe7fd; stroke:#8b5cf6; }
+    .role-infra-text { fill:#5b21b6; }
+    .accent-client { fill:#2f6fed; }
+    .accent-infra { fill:#8b5cf6; }
+    @media (prefers-color-scheme: dark) {
+      .card { fill:#1b1e24; stroke:#383d46; }
+      .note { fill:#9aa4b2; }
+      .section { fill:#e5e7eb; }
+      .zebra { fill:#22262e; }
+      .purpose { fill:#cdd3db; }
+      .role-client { fill:#1e2c4d; stroke:#4f8cff; }
+      .role-client-text { fill:#9dc0ff; }
+      .role-infra { fill:#2e2447; stroke:#a78bfa; }
+      .role-infra-text { fill:#d5c6fb; }
+      .accent-client { fill:#4f8cff; }
+      .accent-infra { fill:#a78bfa; }
+    }
+    text { font-size:13px; }
+  </style>
+
+  <rect x="6" y="6" width="968" height="628" rx="16" class="card" stroke-width="1.5"/>
+
+  <text x="490" y="34" text-anchor="middle" class="note" font-size="13">
+    Роль читается из прошивки подключённого Meshtastic-устройства и определяет поведение узла в сети
+  </text>
+
+  <!-- Секция: клиентские роли -->
+  <rect x="30" y="52" width="5" height="20" class="accent-client"/>
+  <text x="44" y="68" class="section" font-size="15">Клиентские роли</text>
+
+  <g>
+    <rect x="20" y="84" width="940" height="34" rx="8" class="zebra"/>
+    <rect x="20" y="164" width="940" height="34" rx="8" class="zebra"/>
+    <rect x="20" y="244" width="940" height="34" rx="8" class="zebra"/>
+    <rect x="20" y="324" width="940" height="34" rx="8" class="zebra"/>
+
+    <rect x="30" y="84" width="168" height="34" rx="8" class="role-client"/>
+    <text x="114" y="106" text-anchor="middle" class="role-client-text" font-family="Consolas, monospace" font-weight="700">CLIENT</text>
+    <text x="222" y="106" class="purpose">Обычное клиентское устройство (по умолчанию)</text>
+
+    <rect x="30" y="124" width="168" height="34" rx="8" class="role-client"/>
+    <text x="114" y="146" text-anchor="middle" class="role-client-text" font-family="Consolas, monospace" font-weight="700">CLIENT_MUTE</text>
+    <text x="222" y="146" class="purpose">Не ретранслирует чужие пакеты</text>
+
+    <rect x="30" y="164" width="168" height="34" rx="8" class="role-client"/>
+    <text x="114" y="186" text-anchor="middle" class="role-client-text" font-family="Consolas, monospace" font-weight="700">CLIENT_HIDDEN</text>
+    <text x="222" y="186" class="purpose">Скрытный режим / энергосбережение, минимум эфирной активности</text>
+
+    <rect x="30" y="204" width="168" height="34" rx="8" class="role-client"/>
+    <text x="114" y="226" text-anchor="middle" class="role-client-text" font-family="Consolas, monospace" font-weight="700">TRACKER</text>
+    <text x="222" y="226" class="purpose">Приоритет GPS-позиционирования</text>
+
+    <rect x="30" y="244" width="168" height="34" rx="8" class="role-client"/>
+    <text x="114" y="266" text-anchor="middle" class="role-client-text" font-family="Consolas, monospace" font-weight="700">SENSOR</text>
+    <text x="222" y="266" class="purpose">Приоритет телеметрии с датчиков</text>
+
+    <rect x="30" y="284" width="168" height="34" rx="8" class="role-client"/>
+    <text x="114" y="306" text-anchor="middle" class="role-client-text" font-family="Consolas, monospace" font-weight="700">TAK</text>
+    <text x="222" y="306" class="purpose">Интеграция с системой ATAK</text>
+
+    <rect x="30" y="324" width="168" height="34" rx="8" class="role-client"/>
+    <text x="114" y="346" text-anchor="middle" class="role-client-text" font-family="Consolas, monospace" font-weight="700">TAK_TRACKER</text>
+    <text x="222" y="346" class="purpose">ATAK + автоматические PLI-маяки позиции</text>
+
+    <rect x="30" y="364" width="168" height="34" rx="8" class="role-client"/>
+    <text x="114" y="386" text-anchor="middle" class="role-client-text" font-family="Consolas, monospace" font-weight="700">LOST_AND_FOUND</text>
+    <text x="222" y="386" class="purpose">Регулярно транслирует местоположение — поиск потерянного устройства</text>
+  </g>
+
+  <!-- Секция: инфраструктурные роли -->
+  <rect x="30" y="416" width="5" height="20" class="accent-infra"/>
+  <text x="44" y="432" class="section" font-size="15">Инфраструктурные роли</text>
+
+  <g>
+    <rect x="20" y="448" width="940" height="34" rx="8" class="zebra"/>
+    <rect x="20" y="528" width="940" height="34" rx="8" class="zebra"/>
+
+    <rect x="30" y="448" width="168" height="34" rx="8" class="role-infra"/>
+    <text x="114" y="470" text-anchor="middle" class="role-infra-text" font-family="Consolas, monospace" font-weight="700">ROUTER</text>
+    <text x="222" y="470" class="purpose">Инфраструктурный ретранслятор, виден в списке узлов сети</text>
+
+    <rect x="30" y="488" width="168" height="34" rx="8" class="role-infra"/>
+    <text x="114" y="510" text-anchor="middle" class="role-infra-text" font-family="Consolas, monospace" font-weight="700">ROUTER_LATE</text>
+    <text x="222" y="510" class="purpose">Низкий приоритет — включается последним, покрытие локальных кластеров</text>
+
+    <rect x="30" y="528" width="168" height="34" rx="8" class="role-infra"/>
+    <text x="114" y="550" text-anchor="middle" class="role-infra-text" font-family="Consolas, monospace" font-weight="700">CLIENT_BASE</text>
+    <text x="222" y="550" class="purpose">Персональная базовая станция — узел-кэш для дополучения истории</text>
+  </g>
+
+  <text x="490" y="602" text-anchor="middle" class="note" font-size="12">
+    Также распознаются более ранние варианты инфраструктурной роли ROUTER_CLIENT и REPEATER (старые прошивки) —
+  </text>
+  <text x="490" y="620" text-anchor="middle" class="note" font-size="12">
+    учитываются наравне с ROUTER / ROUTER_LATE / CLIENT_BASE
+  </text>
+</svg>

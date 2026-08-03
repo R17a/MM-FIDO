@@ -1,0 +1,111 @@
+<svg viewBox="0 0 980 580" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', 'Microsoft YaHei', Helvetica, Arial, sans-serif">
+  <style>
+    .card { fill:#f7f8fa; stroke:#d7dbe0; }
+    .link { stroke:#14b8a6; }
+    .link-label { fill:#0f766e; }
+    .node-label { fill:#ffffff; font-weight:600; }
+    .sub-label { fill:#5b6472; }
+    .note { fill:#5b6472; font-style:italic; }
+    .legend-text { fill:#3a4150; }
+    .client { fill:#2f6fed; }
+    .base { fill:#d9822b; }
+    .router { fill:#8b5cf6; }
+    .cloud { fill:#94a3b8; }
+    @media (prefers-color-scheme: dark) {
+      .card { fill:#1b1e24; stroke:#383d46; }
+      .link { stroke:#2dd4bf; }
+      .link-label { fill:#5eead4; }
+      .sub-label { fill:#9aa4b2; }
+      .note { fill:#9aa4b2; }
+      .legend-text { fill:#c7cdd6; }
+      .client { fill:#4f8cff; }
+      .base { fill:#f0a94e; }
+      .router { fill:#a78bfa; }
+      .cloud { fill:#6b7280; }
+    }
+    text { font-size:15px; }
+  </style>
+
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" class="link" style="fill:inherit"/>
+    </marker>
+  </defs>
+
+  <rect x="6" y="6" width="968" height="568" rx="16" class="card" stroke-width="1.5"/>
+
+  <text x="490" y="42" text-anchor="middle" class="note" font-size="13.5">
+    任意两个处于无线电通信范围内的节点都通过 LoRa 直接连接——网络是扁平的，没有唯一的必经中介
+  </text>
+
+  <!-- 客户端链之间的水平 LoRa 连接 -->
+  <line x1="152" y1="150" x2="318" y2="150" class="link" stroke-width="3" stroke-dasharray="7 5" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+  <text x="235" y="136" text-anchor="middle" class="link-label" font-size="13" font-weight="600">LoRa</text>
+
+  <line x1="402" y1="150" x2="568" y2="150" class="link" stroke-width="3" stroke-dasharray="7 5" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+  <text x="485" y="136" text-anchor="middle" class="link-label" font-size="13" font-weight="600">LoRa</text>
+
+  <line x1="652" y1="150" x2="818" y2="150" class="link" stroke-width="3" stroke-dasharray="7 5" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+  <text x="735" y="136" text-anchor="middle" class="link-label" font-size="13" font-weight="600">LoRa</text>
+
+  <!-- 垂直 LoRa 连接：CLIENT_BASE -> ROUTER -->
+  <line x1="610" y1="192" x2="610" y2="284" class="link" stroke-width="3" stroke-dasharray="7 5" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+  <text x="628" y="242" class="link-label" font-size="13" font-weight="600">LoRa</text>
+
+  <!-- 连接：ROUTER -> 互联网 -->
+  <line x1="662" y1="330" x2="784" y2="330" class="link" stroke-width="3" stroke-dasharray="7 5" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+  <text x="723" y="316" text-anchor="middle" class="link-label" font-size="12.5" font-weight="600">互联网上行链路</text>
+
+  <!-- 节点：CLIENT (1) -->
+  <circle cx="110" cy="150" r="42" class="client"/>
+  <text x="110" y="156" text-anchor="middle" class="node-label" font-size="14">CLIENT</text>
+
+  <!-- 节点：CLIENT (2) -->
+  <circle cx="360" cy="150" r="42" class="client"/>
+  <text x="360" y="156" text-anchor="middle" class="node-label" font-size="14">CLIENT</text>
+
+  <!-- 节点：CLIENT_BASE -->
+  <rect x="568" y="108" width="84" height="84" rx="14" class="base"/>
+  <text x="610" y="147" text-anchor="middle" class="node-label" font-size="13">CLIENT</text>
+  <text x="610" y="163" text-anchor="middle" class="node-label" font-size="13">_BASE</text>
+
+  <!-- 节点：CLIENT (3, 其他角色) -->
+  <circle cx="860" cy="150" r="42" class="client"/>
+  <text x="860" y="156" text-anchor="middle" class="node-label" font-size="14">CLIENT</text>
+  <text x="860" y="210" text-anchor="middle" class="sub-label" font-size="11">(TRACKER / SENSOR / …)</text>
+
+  <!-- 节点：ROUTER / ROUTER_LATE（三角形） -->
+  <polygon points="610,286 566,368 654,368" class="router"/>
+  <text x="610" y="350" text-anchor="middle" class="node-label" font-size="12">ROUTER</text>
+  <text x="610" y="395" text-anchor="middle" class="sub-label" font-size="11">/ ROUTER_LATE</text>
+
+  <!-- 节点：互联网 / 其他网络分段（云朵） -->
+  <g class="cloud">
+    <ellipse cx="828" cy="338" rx="34" ry="21"/>
+    <ellipse cx="892" cy="338" rx="34" ry="21"/>
+    <ellipse cx="860" cy="320" rx="42" ry="26"/>
+    <rect x="800" y="332" width="120" height="28" rx="14"/>
+  </g>
+  <text x="860" y="342" text-anchor="middle" class="node-label" font-size="11">互联网</text>
+  <text x="860" y="395" text-anchor="middle" class="sub-label" font-size="11">连接其他网络分段</text>
+
+  <!-- 图例：单列，纵向留白充足 -->
+  <g font-size="12.5">
+    <circle cx="40" cy="452" r="9" class="client"/>
+    <text x="62" y="456" class="legend-text">客户端设备 — CLIENT / MUTE / HIDDEN / TRACKER / SENSOR / TAK / …</text>
+
+    <rect x="31" y="476" width="18" height="18" rx="4" class="base"/>
+    <text x="62" y="490" class="legend-text">CLIENT_BASE — 本地缓存节点（"据点"），提供补收服务</text>
+
+    <polygon points="40,500 31,518 49,518" class="router"/>
+    <text x="62" y="514" class="legend-text">ROUTER / ROUTER_LATE — 基础设施中继节点，扩大无线覆盖范围</text>
+
+    <g class="cloud">
+      <ellipse cx="33" cy="540" rx="9" ry="6"/>
+      <ellipse cx="47" cy="540" rx="9" ry="6"/>
+      <ellipse cx="40" cy="535" rx="11" ry="7"/>
+      <rect x="29" y="539" width="22" height="8" rx="4"/>
+    </g>
+    <text x="62" y="546" class="legend-text">互联网上行链路 — 连接其他网络分段</text>
+  </g>
+</svg>
