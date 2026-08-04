@@ -1,4 +1,4 @@
-<svg viewBox="0 0 980 640" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', Helvetica, Arial, sans-serif">
+<svg viewBox="0 0 980 660" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', Helvetica, Arial, sans-serif">
   <style>
     .card { fill:#f7f8fa; stroke:#d7dbe0; }
     .note { fill:#5b6472; font-style:italic; }
@@ -27,7 +27,7 @@
     text { font-size:13px; }
   </style>
 
-  <rect x="6" y="6" width="968" height="628" rx="16" class="card" stroke-width="1.5"/>
+  <rect x="6" y="6" width="968" height="648" rx="16" class="card" stroke-width="1.5"/>
 
   <text x="490" y="34" text-anchor="middle" class="note" font-size="13">
     Роль читается из прошивки подключённого Meshtastic-устройства и определяет поведение узла в сети
@@ -102,5 +102,8 @@
   </text>
   <text x="490" y="620" text-anchor="middle" class="note" font-size="12">
     учитываются наравне с ROUTER / ROUTER_LATE / CLIENT_BASE
+  </text>
+  <text x="490" y="642" text-anchor="middle" class="note" font-size="12">
+    Выход в интернет — опциональная возможность любого инфраструктурного узла, а не только ROUTER
   </text>
 </svg>

@@ -22,7 +22,7 @@ it's the same TUI application — the difference between types is defined by
 the **device role** (see section 2) and whether the node runs a background
 service that shares history with neighbors.
 
-<img src="https://github.com/R17a/Meshtastic_FIDO/blob/main/images/topology.EN.svg">
+![Meshtastic-FIDO network topology](images/topology.EN.svg)
 
 Any two nodes within radio range connect over LoRa directly — the network
 is flat, with no hierarchy and no single mandatory intermediary. CLIENT_BASE
@@ -45,14 +45,31 @@ same way as to a `CLIENT_BASE` or `ROUTER`.
 The same TUI application, but on a device with the **`CLIENT_BASE`** role
 that stays physically powered on for extended periods. Such nodes run a
 background service that shares echo-area history and serve catch-up of missed
-messages to neighboring clients that return to the air — without needing
-internet access. This is the closest analogue of a "point" in FidoNet
-terminology.
+messages to neighboring clients that return to the air. This is the closest
+analogue of a "point" in FidoNet terminology. Internet access is optional
+for such a node, not required — see below.
 
 ### Infrastructure relay node (`ROUTER` / `ROUTER_LATE`)
-Extends the network's radio range by relaying packets further. May
-additionally have internet access and act as a bridge between disjoint
-network segments or into a common backbone.
+Extends the network's radio range by relaying packets further, including to
+nodes outside direct range.
+
+### Internet uplink — an optional capability of any infrastructure node
+Internet access isn't tied to a specific role: both `ROUTER`/`ROUTER_LATE`
+and `CLIENT_BASE` can additionally have internet access, on equal footing
+with a relay node. Lacking internet doesn't prevent a node from doing its
+main job (history sharing for `CLIENT_BASE`, relaying for `ROUTER`).
+
+Bridging disjoint network segments (for example, between cities with no
+shared radio range) is a separate capability built on top of the internet
+uplink, via Meshtastic firmware's built-in MQTT client proxy: the node
+delegates the actual broker connection to this application (the board
+itself usually has no WiFi/IP of its own), while the board publishes/
+receives over-the-air packets through the same serial channel. The bridge
+operates strictly below the echo-area protocol — the frame format and
+fragmentation don't change at all, packets are simply also relayed through
+the broker instead of (or alongside) the radio link. Both sides need
+matching broker settings and channel key — configured on the board itself
+(official Meshtastic app/CLI), not by this application.
 
 ---
 
@@ -61,7 +78,7 @@ network segments or into a common backbone.
 The role is read from the firmware of the connected Meshtastic device and
 determines the node's behavior in the network:
 
-<img src="https://github.com/R17a/Meshtastic_FIDO/blob/main/images/roles.EN.svg">
+![Meshtastic device roles](images/roles.EN.svg)
 
 ### How the role affects network behavior
 - Every node — client or infrastructure — independently stores its own mail
