@@ -41,21 +41,16 @@
   </text>
 
   <!-- 客户端链之间的水平 LoRa 连接 -->
-  <line x1="152" y1="200" x2="318" y2="200" class="link" stroke-width="3" stroke-dasharray="7 5" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
   <text x="235" y="186" text-anchor="middle" class="link-label" font-size="13" font-weight="600">LoRa</text>
 
-  <line x1="402" y1="200" x2="568" y2="200" class="link" stroke-width="3" stroke-dasharray="7 5" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
   <text x="485" y="186" text-anchor="middle" class="link-label" font-size="13" font-weight="600">LoRa</text>
 
-  <line x1="652" y1="200" x2="818" y2="200" class="link" stroke-width="3" stroke-dasharray="7 5" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
   <text x="735" y="186" text-anchor="middle" class="link-label" font-size="13" font-weight="600">LoRa</text>
 
   <!-- 垂直 LoRa 连接：CLIENT_BASE -> ROUTER -->
-  <line x1="610" y1="242" x2="610" y2="334" class="link" stroke-width="3" stroke-dasharray="7 5" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
   <text x="628" y="292" class="link-label" font-size="13" font-weight="600">LoRa</text>
 
   <!-- 连接：ROUTER -> 互联网 -->
-  <line x1="662" y1="380" x2="784" y2="380" class="link" stroke-width="3" stroke-dasharray="7 5" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
   <text x="723" y="366" text-anchor="middle" class="link-label" font-size="12.5" font-weight="600">互联网上行链路</text>
 
   <!-- 节点：CLIENT (1) -->
@@ -68,7 +63,6 @@
 
   <!-- CLIENT_BASE 的可选互联网上行链路（不仅限于 ROUTER）——连接长度现在与下方
        ROUTER -> 互联网 的连接相当，而不是紧贴在顶部说明文字下方 -->
-  <line x1="598" y1="152" x2="598" y2="60" class="link" stroke-width="2" stroke-dasharray="4 4" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
   <g class="cloud" opacity="0.9">
     <ellipse cx="590" cy="48" rx="10" ry="6.5"/>
     <ellipse cx="606" cy="48" rx="10" ry="6.5"/>
@@ -126,4 +120,12 @@
     <rect x="31" y="628" width="18" height="18" rx="4" class="tech"/>
     <text x="62" y="642" class="legend-text">技术节点（无头设备） — TRACKER / SENSOR / TAK / TAK_TRACKER / LOST_AND_FOUND / REPEATER — 无 PC、无应用</text>
   </g>
+
+  <!-- 连接线放在最后绘制，覆盖在已绘制的节点之上——否则节点形状会在连接处遮挡箭头。 -->
+  <line x1="152" y1="200" x2="318" y2="200" class="link" stroke-width="3" stroke-dasharray="7 5" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+  <line x1="402" y1="200" x2="568" y2="200" class="link" stroke-width="3" stroke-dasharray="7 5" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+  <line x1="652" y1="200" x2="818" y2="200" class="link" stroke-width="3" stroke-dasharray="7 5" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+  <line x1="610" y1="242" x2="610" y2="334" class="link" stroke-width="3" stroke-dasharray="7 5" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+  <line x1="662" y1="380" x2="784" y2="380" class="link" stroke-width="3" stroke-dasharray="7 5" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+  <line x1="598" y1="152" x2="598" y2="60" class="link" stroke-width="2" stroke-dasharray="4 4" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
 </svg>

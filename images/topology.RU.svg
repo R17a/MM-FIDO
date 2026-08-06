@@ -41,21 +41,16 @@
   </text>
 
   <!-- Горизонтальные LoRa-связи между клиентами -->
-  <line x1="152" y1="200" x2="318" y2="200" class="link" stroke-width="3" stroke-dasharray="7 5" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
   <text x="235" y="186" text-anchor="middle" class="link-label" font-size="13" font-weight="600">LoRa</text>
 
-  <line x1="402" y1="200" x2="568" y2="200" class="link" stroke-width="3" stroke-dasharray="7 5" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
   <text x="485" y="186" text-anchor="middle" class="link-label" font-size="13" font-weight="600">LoRa</text>
 
-  <line x1="652" y1="200" x2="818" y2="200" class="link" stroke-width="3" stroke-dasharray="7 5" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
   <text x="735" y="186" text-anchor="middle" class="link-label" font-size="13" font-weight="600">LoRa</text>
 
   <!-- Вертикальная LoRa-связь: CLIENT_BASE -> ROUTER -->
-  <line x1="610" y1="242" x2="610" y2="334" class="link" stroke-width="3" stroke-dasharray="7 5" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
   <text x="628" y="292" class="link-label" font-size="13" font-weight="600">LoRa</text>
 
   <!-- Связь: ROUTER -> Интернет -->
-  <line x1="662" y1="380" x2="784" y2="380" class="link" stroke-width="3" stroke-dasharray="7 5" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
   <text x="723" y="366" text-anchor="middle" class="link-label" font-size="12.5" font-weight="600">Internet-аплинк</text>
 
   <!-- Узел: CLIENT (1) -->
@@ -68,7 +63,6 @@
 
   <!-- Необязательный интернет-аплинк у CLIENT_BASE (не только у ROUTER) — длина связи
        соразмерна связи ROUTER -> Интернет ниже, а не прижата к верхней подписи -->
-  <line x1="598" y1="152" x2="598" y2="60" class="link" stroke-width="2" stroke-dasharray="4 4" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
   <g class="cloud" opacity="0.9">
     <ellipse cx="590" cy="48" rx="10" ry="6.5"/>
     <ellipse cx="606" cy="48" rx="10" ry="6.5"/>
@@ -126,4 +120,12 @@
     <rect x="31" y="628" width="18" height="18" rx="4" class="tech"/>
     <text x="62" y="642" class="legend-text">Технический узел (headless) — TRACKER / SENSOR / TAK / TAK_TRACKER / LOST_AND_FOUND / REPEATER — без ПК и приложения</text>
   </g>
+
+  <!-- Связи рисуются ПОСЛЕДНИМИ, поверх уже нарисованных узлов — иначе кружки/прямоугольники узлов перекрывают наконечники стрелок на стыке. -->
+  <line x1="152" y1="200" x2="318" y2="200" class="link" stroke-width="3" stroke-dasharray="7 5" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+  <line x1="402" y1="200" x2="568" y2="200" class="link" stroke-width="3" stroke-dasharray="7 5" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+  <line x1="652" y1="200" x2="818" y2="200" class="link" stroke-width="3" stroke-dasharray="7 5" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+  <line x1="610" y1="242" x2="610" y2="334" class="link" stroke-width="3" stroke-dasharray="7 5" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+  <line x1="662" y1="380" x2="784" y2="380" class="link" stroke-width="3" stroke-dasharray="7 5" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+  <line x1="598" y1="152" x2="598" y2="60" class="link" stroke-width="2" stroke-dasharray="4 4" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
 </svg>
