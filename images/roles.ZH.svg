@@ -1,4 +1,4 @@
-<svg viewBox="0 0 980 660" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', 'Microsoft YaHei', Helvetica, Arial, sans-serif">
+<svg viewBox="0 0 980 820" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', 'Microsoft YaHei', Helvetica, Arial, sans-serif">
   <style>
     .card { fill:#f7f8fa; stroke:#d7dbe0; }
     .note { fill:#5b6472; font-style:italic; }
@@ -9,8 +9,11 @@
     .role-client-text { fill:#1949b3; }
     .role-infra { fill:#efe7fd; stroke:#8b5cf6; }
     .role-infra-text { fill:#5b21b6; }
+    .role-tech { fill:#eef0f3; stroke:#64748b; }
+    .role-tech-text { fill:#334155; }
     .accent-client { fill:#2f6fed; }
     .accent-infra { fill:#8b5cf6; }
+    .accent-tech { fill:#64748b; }
     @media (prefers-color-scheme: dark) {
       .card { fill:#1b1e24; stroke:#383d46; }
       .note { fill:#9aa4b2; }
@@ -21,13 +24,16 @@
       .role-client-text { fill:#9dc0ff; }
       .role-infra { fill:#2e2447; stroke:#a78bfa; }
       .role-infra-text { fill:#d5c6fb; }
+      .role-tech { fill:#2a2e37; stroke:#94a3b8; }
+      .role-tech-text { fill:#cbd5e1; }
       .accent-client { fill:#4f8cff; }
       .accent-infra { fill:#a78bfa; }
+      .accent-tech { fill:#94a3b8; }
     }
     text { font-size:13px; }
   </style>
 
-  <rect x="6" y="6" width="968" height="648" rx="16" class="card" stroke-width="1.5"/>
+  <rect x="6" y="6" width="968" height="808" rx="16" class="card" stroke-width="1.5"/>
 
   <text x="490" y="34" text-anchor="middle" class="note" font-size="13">
     角色从所连接的 Meshtastic 设备固件中读取，并决定该节点在网络中的行为
@@ -40,8 +46,6 @@
   <g>
     <rect x="20" y="84" width="940" height="34" rx="8" class="zebra"/>
     <rect x="20" y="164" width="940" height="34" rx="8" class="zebra"/>
-    <rect x="20" y="244" width="940" height="34" rx="8" class="zebra"/>
-    <rect x="20" y="324" width="940" height="34" rx="8" class="zebra"/>
 
     <rect x="30" y="84" width="168" height="34" rx="8" class="role-client"/>
     <text x="114" y="106" text-anchor="middle" class="role-client-text" font-family="Consolas, monospace" font-weight="700">CLIENT</text>
@@ -54,56 +58,75 @@
     <rect x="30" y="164" width="168" height="34" rx="8" class="role-client"/>
     <text x="114" y="186" text-anchor="middle" class="role-client-text" font-family="Consolas, monospace" font-weight="700">CLIENT_HIDDEN</text>
     <text x="222" y="186" class="purpose">隐蔽/省电模式，将无线电活跃度降到最低</text>
-
-    <rect x="30" y="204" width="168" height="34" rx="8" class="role-client"/>
-    <text x="114" y="226" text-anchor="middle" class="role-client-text" font-family="Consolas, monospace" font-weight="700">TRACKER</text>
-    <text x="222" y="226" class="purpose">优先广播 GPS 定位数据包</text>
-
-    <rect x="30" y="244" width="168" height="34" rx="8" class="role-client"/>
-    <text x="114" y="266" text-anchor="middle" class="role-client-text" font-family="Consolas, monospace" font-weight="700">SENSOR</text>
-    <text x="222" y="266" class="purpose">优先广播传感器遥测数据包</text>
-
-    <rect x="30" y="284" width="168" height="34" rx="8" class="role-client"/>
-    <text x="114" y="306" text-anchor="middle" class="role-client-text" font-family="Consolas, monospace" font-weight="700">TAK</text>
-    <text x="222" y="306" class="purpose">与 ATAK 系统集成</text>
-
-    <rect x="30" y="324" width="168" height="34" rx="8" class="role-client"/>
-    <text x="114" y="346" text-anchor="middle" class="role-client-text" font-family="Consolas, monospace" font-weight="700">TAK_TRACKER</text>
-    <text x="222" y="346" class="purpose">ATAK + 自动 PLI 位置信标</text>
-
-    <rect x="30" y="364" width="168" height="34" rx="8" class="role-client"/>
-    <text x="114" y="386" text-anchor="middle" class="role-client-text" font-family="Consolas, monospace" font-weight="700">LOST_AND_FOUND</text>
-    <text x="222" y="386" class="purpose">定期广播位置信息——用于寻回丢失的设备</text>
   </g>
 
   <!-- 分区：基础设施角色 -->
-  <rect x="30" y="416" width="5" height="20" class="accent-infra"/>
-  <text x="44" y="432" class="section" font-size="15">基础设施角色</text>
+  <rect x="30" y="216" width="5" height="20" class="accent-infra"/>
+  <text x="44" y="232" class="section" font-size="15">基础设施角色</text>
 
   <g>
-    <rect x="20" y="448" width="940" height="34" rx="8" class="zebra"/>
-    <rect x="20" y="528" width="940" height="34" rx="8" class="zebra"/>
+    <rect x="20" y="248" width="940" height="34" rx="8" class="zebra"/>
+    <rect x="20" y="328" width="940" height="34" rx="8" class="zebra"/>
 
-    <rect x="30" y="448" width="168" height="34" rx="8" class="role-infra"/>
-    <text x="114" y="470" text-anchor="middle" class="role-infra-text" font-family="Consolas, monospace" font-weight="700">ROUTER</text>
-    <text x="222" y="470" class="purpose">基础设施中继节点，在节点列表中可见</text>
+    <rect x="30" y="248" width="168" height="34" rx="8" class="role-infra"/>
+    <text x="114" y="270" text-anchor="middle" class="role-infra-text" font-family="Consolas, monospace" font-weight="700">ROUTER</text>
+    <text x="222" y="270" class="purpose">基础设施中继节点，在节点列表中可见</text>
 
-    <rect x="30" y="488" width="168" height="34" rx="8" class="role-infra"/>
-    <text x="114" y="510" text-anchor="middle" class="role-infra-text" font-family="Consolas, monospace" font-weight="700">ROUTER_LATE</text>
-    <text x="222" y="510" class="purpose">低优先级中继——最后才启动转发，用于覆盖局部集群</text>
+    <rect x="30" y="288" width="168" height="34" rx="8" class="role-infra"/>
+    <text x="114" y="310" text-anchor="middle" class="role-infra-text" font-family="Consolas, monospace" font-weight="700">ROUTER_LATE</text>
+    <text x="222" y="310" class="purpose">低优先级中继——最后才启动转发，用于覆盖局部集群</text>
 
-    <rect x="30" y="528" width="168" height="34" rx="8" class="role-infra"/>
-    <text x="114" y="550" text-anchor="middle" class="role-infra-text" font-family="Consolas, monospace" font-weight="700">CLIENT_BASE</text>
-    <text x="222" y="550" class="purpose">个人基站——用于补收历史消息的缓存节点</text>
+    <rect x="30" y="328" width="168" height="34" rx="8" class="role-infra"/>
+    <text x="114" y="350" text-anchor="middle" class="role-infra-text" font-family="Consolas, monospace" font-weight="700">CLIENT_BASE</text>
+    <text x="222" y="350" class="purpose">个人基站——用于补收历史消息的缓存节点</text>
   </g>
 
-  <text x="490" y="602" text-anchor="middle" class="note" font-size="12">
-    网络同样识别 ROUTER_CLIENT 和 REPEATER——基础设施角色较早期的变体，出现在较旧固件上——
+  <text x="490" y="402" text-anchor="middle" class="note" font-size="12">
+    网络同样识别 ROUTER_CLIENT（较旧固件，自 v2.3.15 起已弃用）——与 ROUTER / ROUTER_LATE / CLIENT_BASE 同等对待
   </text>
-  <text x="490" y="620" text-anchor="middle" class="note" font-size="12">
-    并将其与 ROUTER / ROUTER_LATE / CLIENT_BASE 同等对待
+
+  <!-- 分区：技术角色（无头设备 —— 无 PC、无法运行我们的应用） -->
+  <rect x="30" y="436" width="5" height="20" class="accent-tech"/>
+  <text x="44" y="452" class="section" font-size="15">技术角色（无头设备 —— 无 PC、无法运行我们的应用）</text>
+
+  <g>
+    <rect x="20" y="468" width="940" height="34" rx="8" class="zebra"/>
+    <rect x="20" y="548" width="940" height="34" rx="8" class="zebra"/>
+    <rect x="20" y="628" width="940" height="34" rx="8" class="zebra"/>
+
+    <rect x="30" y="468" width="168" height="34" rx="8" class="role-tech"/>
+    <text x="114" y="490" text-anchor="middle" class="role-tech-text" font-family="Consolas, monospace" font-weight="700">REPEATER</text>
+    <text x="222" y="490" class="purpose">仅转发固件层数据包（自 v2.7.11 起已弃用）——不参与上层协议</text>
+
+    <rect x="30" y="508" width="168" height="34" rx="8" class="role-tech"/>
+    <text x="114" y="530" text-anchor="middle" class="role-tech-text" font-family="Consolas, monospace" font-weight="700">TRACKER</text>
+    <text x="222" y="530" class="purpose">优先广播 GPS 定位数据包</text>
+
+    <rect x="30" y="548" width="168" height="34" rx="8" class="role-tech"/>
+    <text x="114" y="570" text-anchor="middle" class="role-tech-text" font-family="Consolas, monospace" font-weight="700">SENSOR</text>
+    <text x="222" y="570" class="purpose">优先广播传感器遥测数据包</text>
+
+    <rect x="30" y="588" width="168" height="34" rx="8" class="role-tech"/>
+    <text x="114" y="610" text-anchor="middle" class="role-tech-text" font-family="Consolas, monospace" font-weight="700">TAK</text>
+    <text x="222" y="610" class="purpose">与 ATAK 系统集成</text>
+
+    <rect x="30" y="628" width="168" height="34" rx="8" class="role-tech"/>
+    <text x="114" y="650" text-anchor="middle" class="role-tech-text" font-family="Consolas, monospace" font-weight="700">TAK_TRACKER</text>
+    <text x="222" y="650" class="purpose">ATAK + 自动 PLI 位置信标</text>
+
+    <rect x="30" y="668" width="168" height="34" rx="8" class="role-tech"/>
+    <text x="114" y="690" text-anchor="middle" class="role-tech-text" font-family="Consolas, monospace" font-weight="700">LOST_AND_FOUND</text>
+    <text x="222" y="690" class="purpose">定期广播位置信息——用于寻回丢失的设备</text>
+  </g>
+
+  <text x="490" y="736" text-anchor="middle" class="note" font-size="12">
+    独立自主运行，没有运行我们应用的 PC —— 物理上不可能成为 AreaFix 中枢，
   </text>
-  <text x="490" y="642" text-anchor="middle" class="note" font-size="12">
+  <text x="490" y="754" text-anchor="middle" class="note" font-size="12">
+    也不可能成为对话方（见 F6：邻居节点列表的"技术节点"分组）
+  </text>
+
+  <text x="490" y="784" text-anchor="middle" class="note" font-size="12">
     接入互联网是任何基础设施节点的可选能力，并非 ROUTER 独有
   </text>
 </svg>

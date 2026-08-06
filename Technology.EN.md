@@ -34,12 +34,20 @@ intermediate relays).
 
 ### Regular client (network operator)
 The standard participant: reads and writes echomail and netmail through the
-TUI, subscribes to echo areas, and replies to messages. Runs on any "client"
-device role (`CLIENT`, `CLIENT_MUTE`, `CLIENT_HIDDEN`, `TRACKER`, `SENSOR`,
-`TAK`, `TAK_TRACKER`, `LOST_AND_FOUND` — see section 2). Keeps its own mail
-and subscription list in its own local database. Connects over LoRa directly
-to any other node within radio range — to another regular client exactly the
-same way as to a `CLIENT_BASE` or `ROUTER`.
+TUI, subscribes to echo areas, and replies to messages. Runs on a "client"
+device role (`CLIENT`, `CLIENT_MUTE`, `CLIENT_HIDDEN` — see section 2). Keeps
+its own mail and subscription list in its own local database. Connects over
+LoRa directly to any other node within radio range — to another regular
+client exactly the same way as to a `CLIENT_BASE` or `ROUTER`.
+
+### Technical nodes — no PC, no app (`REPEATER`, `TRACKER`, `SENSOR`, `TAK`, `TAK_TRACKER`, `LOST_AND_FOUND`)
+These roles are headless: the device runs autonomously (often on battery or
+solar power), with no PC permanently attached, and physically cannot run our
+app. Such a node can never be a conversation partner or an AreaFix hub — it
+only relays or collects data at the Meshtastic firmware level (packet
+rebroadcast, GPS/telemetry, ATAK integration). In the neighbor list
+(**F6**), these nodes are visually separated from network participants into
+their own grey "Technical nodes" group.
 
 ### Local cache node / "point" (`CLIENT_BASE`)
 The same TUI application, but on a device with the **`CLIENT_BASE`** role
@@ -70,6 +78,71 @@ fragmentation don't change at all, packets are simply also relayed through
 the broker instead of (or alongside) the radio link. Both sides need
 matching broker settings and channel key — configured on the board itself
 (official Meshtastic app/CLI), not by this application.
+The network policy (see the consent screen shown on first launch) requires
+using the single public broker `mqtt.meshtastic.org` for this bridge —
+private brokers are prohibited, since they make traffic invisible to the
+Root Node and split the network's moderation unity.
+
+**Practical consequence (confirmed on real hardware, 2026-08-06):** the
+actual TCP connection to the broker is held by THIS APPLICATION — i.e. the
+device it's running on (laptop, PC), not the LoRa board itself: most boards
+have no internet-capable WiFi module of their own at all. This means getting
+fresh messages through the bridge only requires ANY internet-connected
+computer near the board (over USB/BLE/local network) — even a phone in
+mobile-hotspot mode. The board's own WiFi state is irrelevant here; in fact,
+on ESP32 boards enabling network on the board itself disables Bluetooth at
+the firmware level (confirmed via official Meshtastic documentation, see
+helpme.md), so for this scenario it's actually sensible to keep the board's
+own network off and carry the internet connection separately — for example,
+by connecting to the board over BLE.
+**Important:** the board's BLE holds exactly one connection at a time — if the
+board is already connected over BLE to a phone (e.g. the official Meshtastic
+app has an open BLE session), this application won't find or connect to it
+over BLE until the phone disconnects (see helpme.md, section 3/7).
+**Important about PIN pairing:** if the board's `Bluetooth → pairing mode` is
+`RANDOM_PIN`/`FIXED_PIN` (not `NO_PIN`), PIN pairing must be done through the
+operating system itself (Windows/macOS/Linux Bluetooth settings) BEFORE
+connecting from this application — it has no PIN entry field of its own
+(see helpme.md, section 3).
+
+**A migrating CLIENT and cross-city replication (confirmed, 2026-08-06):** if
+CLIENT_BASE nodes in different cities had internet and brought the bridge up
+(see above), two-way anti-entropy replication has already happened between
+them — so a CLIENT that later comes within radio range of EITHER of those
+nodes IN A DIFFERENT CITY will pick up whatever already replicated, even if
+THAT SPECIFIC node has no internet at the moment of the encounter.
+What matters isn't whether the encountered node has internet RIGHT NOW, but
+whether it had a chance to sync beforehand: internet at the moment of the
+encounter is a strong freshness signal (it means the node could have just
+updated), but it isn't the only way to get current mail — a node that
+replicated earlier and is now temporarily offline can serve it just as well.
+
+![Cross-city mail relay and a migrating CLIENT](images/topology-cities.EN.svg)
+
+**Conditions under which the chain above actually works (important caveats,
+2026-08-06):**
+
+- **The application must be running on every intermediate hub.** All of this
+  logic (`AreaFixServer`, `MqttBridge`, periodic polling) lives in the TUI
+  application itself, not in the board's firmware — a powered-off or
+  not-running hub relays nothing, regardless of what role it's configured
+  with.
+- **Delivery isn't instant.** It travels hop by hop: client → nearest hub →
+  that hub's neighbor on the local mesh → bridge → the hub in the other city
+  → its client — and each hop runs on its own polling cycle (periodic, every
+  ~60 seconds, or immediate when someone manually opens the echo/NETMAIL
+  screen). Several hops typically means minutes, not seconds.
+- **NETMAIL (personal mail) replicates through the SAME mechanism as a
+  regular echo area** — full replication between nodes exchanging history,
+  not address-based routing to the recipient. Hubs along the path store and
+  relay personal messages just like everything else, including ones not
+  addressed to them — confidentiality comes from end-to-end encryption (the
+  recipient decrypts with their own key), not from the message "passing by"
+  nodes it isn't meant for.
+- **Both bridge-side CLIENT_BASE nodes must be configured with the same
+  channel/PSK and the single `mqtt.meshtastic.org` broker** (see above) —
+  without this, the two cities simply can't hear each other through the
+  bridge, regardless of everything else.
 
 ---
 

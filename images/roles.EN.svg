@@ -1,4 +1,4 @@
-<svg viewBox="0 0 980 660" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', Helvetica, Arial, sans-serif">
+<svg viewBox="0 0 980 820" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', Helvetica, Arial, sans-serif">
   <style>
     .card { fill:#f7f8fa; stroke:#d7dbe0; }
     .note { fill:#5b6472; font-style:italic; }
@@ -9,8 +9,11 @@
     .role-client-text { fill:#1949b3; }
     .role-infra { fill:#efe7fd; stroke:#8b5cf6; }
     .role-infra-text { fill:#5b21b6; }
+    .role-tech { fill:#eef0f3; stroke:#64748b; }
+    .role-tech-text { fill:#334155; }
     .accent-client { fill:#2f6fed; }
     .accent-infra { fill:#8b5cf6; }
+    .accent-tech { fill:#64748b; }
     @media (prefers-color-scheme: dark) {
       .card { fill:#1b1e24; stroke:#383d46; }
       .note { fill:#9aa4b2; }
@@ -21,13 +24,16 @@
       .role-client-text { fill:#9dc0ff; }
       .role-infra { fill:#2e2447; stroke:#a78bfa; }
       .role-infra-text { fill:#d5c6fb; }
+      .role-tech { fill:#2a2e37; stroke:#94a3b8; }
+      .role-tech-text { fill:#cbd5e1; }
       .accent-client { fill:#4f8cff; }
       .accent-infra { fill:#a78bfa; }
+      .accent-tech { fill:#94a3b8; }
     }
     text { font-size:13px; }
   </style>
 
-  <rect x="6" y="6" width="968" height="648" rx="16" class="card" stroke-width="1.5"/>
+  <rect x="6" y="6" width="968" height="808" rx="16" class="card" stroke-width="1.5"/>
 
   <text x="490" y="34" text-anchor="middle" class="note" font-size="13">
     The role is read from the connected Meshtastic device's firmware and determines the node's behavior in the network
@@ -40,8 +46,6 @@
   <g>
     <rect x="20" y="84" width="940" height="34" rx="8" class="zebra"/>
     <rect x="20" y="164" width="940" height="34" rx="8" class="zebra"/>
-    <rect x="20" y="244" width="940" height="34" rx="8" class="zebra"/>
-    <rect x="20" y="324" width="940" height="34" rx="8" class="zebra"/>
 
     <rect x="30" y="84" width="168" height="34" rx="8" class="role-client"/>
     <text x="114" y="106" text-anchor="middle" class="role-client-text" font-family="Consolas, monospace" font-weight="700">CLIENT</text>
@@ -54,56 +58,75 @@
     <rect x="30" y="164" width="168" height="34" rx="8" class="role-client"/>
     <text x="114" y="186" text-anchor="middle" class="role-client-text" font-family="Consolas, monospace" font-weight="700">CLIENT_HIDDEN</text>
     <text x="222" y="186" class="purpose">Stealth / power-saving mode, minimal airtime activity</text>
-
-    <rect x="30" y="204" width="168" height="34" rx="8" class="role-client"/>
-    <text x="114" y="226" text-anchor="middle" class="role-client-text" font-family="Consolas, monospace" font-weight="700">TRACKER</text>
-    <text x="222" y="226" class="purpose">Prioritizes GPS position packets</text>
-
-    <rect x="30" y="244" width="168" height="34" rx="8" class="role-client"/>
-    <text x="114" y="266" text-anchor="middle" class="role-client-text" font-family="Consolas, monospace" font-weight="700">SENSOR</text>
-    <text x="222" y="266" class="purpose">Prioritizes telemetry packets</text>
-
-    <rect x="30" y="284" width="168" height="34" rx="8" class="role-client"/>
-    <text x="114" y="306" text-anchor="middle" class="role-client-text" font-family="Consolas, monospace" font-weight="700">TAK</text>
-    <text x="222" y="306" class="purpose">Integration with the ATAK system</text>
-
-    <rect x="30" y="324" width="168" height="34" rx="8" class="role-client"/>
-    <text x="114" y="346" text-anchor="middle" class="role-client-text" font-family="Consolas, monospace" font-weight="700">TAK_TRACKER</text>
-    <text x="222" y="346" class="purpose">ATAK + automatic PLI position beacons</text>
-
-    <rect x="30" y="364" width="168" height="34" rx="8" class="role-client"/>
-    <text x="114" y="386" text-anchor="middle" class="role-client-text" font-family="Consolas, monospace" font-weight="700">LOST_AND_FOUND</text>
-    <text x="222" y="386" class="purpose">Regularly broadcasts location — for recovering a lost device</text>
   </g>
 
   <!-- Section: infrastructure roles -->
-  <rect x="30" y="416" width="5" height="20" class="accent-infra"/>
-  <text x="44" y="432" class="section" font-size="15">Infrastructure roles</text>
+  <rect x="30" y="216" width="5" height="20" class="accent-infra"/>
+  <text x="44" y="232" class="section" font-size="15">Infrastructure roles</text>
 
   <g>
-    <rect x="20" y="448" width="940" height="34" rx="8" class="zebra"/>
-    <rect x="20" y="528" width="940" height="34" rx="8" class="zebra"/>
+    <rect x="20" y="248" width="940" height="34" rx="8" class="zebra"/>
+    <rect x="20" y="328" width="940" height="34" rx="8" class="zebra"/>
 
-    <rect x="30" y="448" width="168" height="34" rx="8" class="role-infra"/>
-    <text x="114" y="470" text-anchor="middle" class="role-infra-text" font-family="Consolas, monospace" font-weight="700">ROUTER</text>
-    <text x="222" y="470" class="purpose">Infrastructure relay, visible in the node list</text>
+    <rect x="30" y="248" width="168" height="34" rx="8" class="role-infra"/>
+    <text x="114" y="270" text-anchor="middle" class="role-infra-text" font-family="Consolas, monospace" font-weight="700">ROUTER</text>
+    <text x="222" y="270" class="purpose">Infrastructure relay, visible in the node list</text>
 
-    <rect x="30" y="488" width="168" height="34" rx="8" class="role-infra"/>
-    <text x="114" y="510" text-anchor="middle" class="role-infra-text" font-family="Consolas, monospace" font-weight="700">ROUTER_LATE</text>
-    <text x="222" y="510" class="purpose">Low-priority relay — activates last, extends coverage for local clusters</text>
+    <rect x="30" y="288" width="168" height="34" rx="8" class="role-infra"/>
+    <text x="114" y="310" text-anchor="middle" class="role-infra-text" font-family="Consolas, monospace" font-weight="700">ROUTER_LATE</text>
+    <text x="222" y="310" class="purpose">Low-priority relay — activates last, extends coverage for local clusters</text>
 
-    <rect x="30" y="528" width="168" height="34" rx="8" class="role-infra"/>
-    <text x="114" y="550" text-anchor="middle" class="role-infra-text" font-family="Consolas, monospace" font-weight="700">CLIENT_BASE</text>
-    <text x="222" y="550" class="purpose">Personal base station — cache node for catch-up sync</text>
+    <rect x="30" y="328" width="168" height="34" rx="8" class="role-infra"/>
+    <text x="114" y="350" text-anchor="middle" class="role-infra-text" font-family="Consolas, monospace" font-weight="700">CLIENT_BASE</text>
+    <text x="222" y="350" class="purpose">Personal base station — cache node for catch-up sync</text>
   </g>
 
-  <text x="490" y="602" text-anchor="middle" class="note" font-size="12">
-    Also recognized: ROUTER_CLIENT and REPEATER, earlier variants of the infrastructure role on older firmware —
+  <text x="490" y="402" text-anchor="middle" class="note" font-size="12">
+    Also ROUTER_CLIENT (older firmware, deprecated since v2.3.15) — treated on par with ROUTER / ROUTER_LATE / CLIENT_BASE
   </text>
-  <text x="490" y="620" text-anchor="middle" class="note" font-size="12">
-    treated on par with ROUTER / ROUTER_LATE / CLIENT_BASE
+
+  <!-- Section: technical roles (headless, no PC or our app) -->
+  <rect x="30" y="436" width="5" height="20" class="accent-tech"/>
+  <text x="44" y="452" class="section" font-size="15">Technical roles (headless — no PC or our app)</text>
+
+  <g>
+    <rect x="20" y="468" width="940" height="34" rx="8" class="zebra"/>
+    <rect x="20" y="548" width="940" height="34" rx="8" class="zebra"/>
+    <rect x="20" y="628" width="940" height="34" rx="8" class="zebra"/>
+
+    <rect x="30" y="468" width="168" height="34" rx="8" class="role-tech"/>
+    <text x="114" y="490" text-anchor="middle" class="role-tech-text" font-family="Consolas, monospace" font-weight="700">REPEATER</text>
+    <text x="222" y="490" class="purpose">Only rebroadcasts firmware packets (deprecated since v2.7.11) — no participation above that layer</text>
+
+    <rect x="30" y="508" width="168" height="34" rx="8" class="role-tech"/>
+    <text x="114" y="530" text-anchor="middle" class="role-tech-text" font-family="Consolas, monospace" font-weight="700">TRACKER</text>
+    <text x="222" y="530" class="purpose">Prioritizes GPS position packets</text>
+
+    <rect x="30" y="548" width="168" height="34" rx="8" class="role-tech"/>
+    <text x="114" y="570" text-anchor="middle" class="role-tech-text" font-family="Consolas, monospace" font-weight="700">SENSOR</text>
+    <text x="222" y="570" class="purpose">Prioritizes telemetry packets</text>
+
+    <rect x="30" y="588" width="168" height="34" rx="8" class="role-tech"/>
+    <text x="114" y="610" text-anchor="middle" class="role-tech-text" font-family="Consolas, monospace" font-weight="700">TAK</text>
+    <text x="222" y="610" class="purpose">Integration with the ATAK system</text>
+
+    <rect x="30" y="628" width="168" height="34" rx="8" class="role-tech"/>
+    <text x="114" y="650" text-anchor="middle" class="role-tech-text" font-family="Consolas, monospace" font-weight="700">TAK_TRACKER</text>
+    <text x="222" y="650" class="purpose">ATAK + automatic PLI position beacons</text>
+
+    <rect x="30" y="668" width="168" height="34" rx="8" class="role-tech"/>
+    <text x="114" y="690" text-anchor="middle" class="role-tech-text" font-family="Consolas, monospace" font-weight="700">LOST_AND_FOUND</text>
+    <text x="222" y="690" class="purpose">Regularly broadcasts location — for recovering a lost device</text>
+  </g>
+
+  <text x="490" y="736" text-anchor="middle" class="note" font-size="12">
+    Runs autonomously, with no PC running our app — physically cannot be an AreaFix hub
   </text>
-  <text x="490" y="642" text-anchor="middle" class="note" font-size="12">
+  <text x="490" y="754" text-anchor="middle" class="note" font-size="12">
+    or a conversation partner (see F6: neighbor list, "Technical nodes" group)
+  </text>
+
+  <text x="490" y="784" text-anchor="middle" class="note" font-size="12">
     Internet uplink is an optional capability of any infrastructure node, not exclusive to ROUTER
   </text>
 </svg>
