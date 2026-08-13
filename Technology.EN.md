@@ -139,6 +139,12 @@ replicated earlier and is now temporarily offline can serve it just as well.
   addressed to them — confidentiality comes from end-to-end encryption (the
   recipient decrypts with their own key), not from the message "passing by"
   nodes it isn't meant for.
+- **But the exchange between a hub and a regular client polling for mail is
+  addressed, not full.** When a regular `CLIENT` asks a nearby node "is there
+  new mail", it only receives NETMAIL messages addressed to itself — not the
+  whole personal-mail cache the hub keeps for full hub-to-hub replication
+  (see the point above). Metadata for other people's mail (subject, sender,
+  date) — not just the encrypted body — isn't sent to such a client at all.
 - **Both bridge-side CLIENT_BASE nodes must be configured with the same
   channel/PSK and the single `mqtt.meshtastic.org` broker** (see above) —
   without this, the two cities simply can't hear each other through the
@@ -173,6 +179,8 @@ determines the node's behavior in the network:
 
 ## 3. Data Delivery (general outline)
 
+![Mail poll interaction: neighbor detection, broadcast reconnaissance, addressed exchange](images/sync-flow.EN.svg)
+
 Messages (echomail, netmail, control commands) pass through a single packing
 and fragmentation pipeline (`PackerEngine`) before going out over the air,
 which brings them within the LoRa radio channel's MTU limits and reassembles
@@ -187,6 +195,18 @@ whatever messages the other one is missing in both directions — not just
 "the client pulls from the hub." Either side can serve the catch-up; it isn't
 tied to a single fixed node.
 
+A new or newly-returned neighbor appearing on the air (via the same presence
+beacon that feeds the neighbor list on **F6**) immediately triggers an
+out-of-schedule mail poll, instead of waiting for the next periodic cycle (up
+to a minute of pointless idling). Any further exchange with that
+already-responded node within this poll is addressed, not broadcast: repeat
+sync requests for an area the node already answered for go to it alone, with
+full round-based confirmation at the send level, rather than blindly
+broadcasting again to everyone. The very first request for each area (the
+reconnaissance round, before any confirmed contact) deliberately stays
+broadcast — there may be more than one source of history, and different
+infrastructure nodes can have different replication levels.
+
 Beyond packing and fragmentation themselves, the same pipeline also saves
 airtime and stays resilient under channel congestion: protocol-aware
 compression, send ordering under airtime congestion, protection against the
@@ -194,6 +214,19 @@ same packet being relayed in an endless loop, and compact representations
 for large history lists. Like the frame format, the details of these
 mechanisms remain part of `PackerEngine`'s closed implementation and aren't
 disclosed here.
+
+For addressed (non-broadcast) multi-fragment sends, fragments left
+unacknowledged after a confirmation round are selectively resent — only the
+missing pieces, not the whole message — for as long as the recipient stays
+visible on the air, or until the user manually cancels the mail poll. See
+`helpme.md`, section 13, for details.
+
+Through the same beacon nodes use to announce themselves on the network, each
+node shares its version number with neighbors — the app's own version and,
+separately, the `PackerEngine` protocol version (see the box above — the two
+change independently). If a neighbor turns out to be running a newer version,
+the user sees a warning in the interface; updating a node remains a user
+action either way — the app never downloads or installs anything on its own.
 
 ---
 
