@@ -1,0 +1,131 @@
+<svg viewBox="0 0 1000 1010" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', Helvetica, Arial, sans-serif">
+  <style>
+    .card { fill:#f7f8fa; stroke:#d7dbe0; }
+    .node-label { fill:#ffffff; font-weight:600; }
+    .sub-label { fill:#5b6472; }
+    .note { fill:#5b6472; font-style:italic; }
+    .legend-text { fill:#3a4150; }
+    .actorA { fill:#2f6fed; }
+    .actorB { fill:#64748b; }
+    .lifeline { stroke:#c3c9d1; }
+    .broadcast { stroke:#d9822b; fill:#d9822b; }
+    .addressed { stroke:#14b8a6; fill:#14b8a6; }
+    .event { fill:#8b5cf6; }
+    .label-broadcast { fill:#92400e; }
+    .label-addressed { fill:#0f766e; }
+    .label-event { fill:#5b21b6; }
+    .noteBox { fill:none; stroke:#94a3b8; stroke-dasharray:4 3; }
+    @media (prefers-color-scheme: dark) {
+      .card { fill:#1b1e24; stroke:#383d46; }
+      .sub-label { fill:#9aa4b2; }
+      .note { fill:#9aa4b2; }
+      .legend-text { fill:#c7cdd6; }
+      .actorA { fill:#4f8cff; }
+      .actorB { fill:#94a3b8; }
+      .lifeline { stroke:#454b56; }
+      .broadcast { stroke:#f0a94e; fill:#f0a94e; }
+      .addressed { stroke:#2dd4bf; fill:#2dd4bf; }
+      .event { fill:#a78bfa; }
+      .label-broadcast { fill:#f0a94e; }
+      .label-addressed { fill:#5eead4; }
+      .label-event { fill:#c4b5fd; }
+      .noteBox { stroke:#64748b; }
+    }
+    text { font-size:13px; }
+  </style>
+
+  <defs>
+    <marker id="arrowBroadcast" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" class="broadcast"/>
+    </marker>
+    <marker id="arrowAddressed" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" class="addressed"/>
+    </marker>
+    <symbol id="spark" viewBox="-10 -10 20 20">
+      <path d="M0,-10 L2.5,-2.5 L10,0 L2.5,2.5 L0,10 L-2.5,2.5 L-10,0 L-2.5,-2.5 Z" class="event"/>
+    </symbol>
+  </defs>
+
+  <rect x="6" y="6" width="988" height="998" rx="16" class="card" stroke-width="1.5"/>
+
+  <text x="500" y="24" text-anchor="middle" class="note" font-size="13">Опрос почты по эхе: разведка (раунд 1) — широковещательно;</text>
+  <text x="500" y="40" text-anchor="middle" class="note" font-size="13">дальнейший обмен с уже ответившим узлом — адресно, с раундовым подтверждением</text>
+
+  <!-- Актёры -->
+  <rect x="90" y="54" width="220" height="46" rx="10" class="actorA"/>
+  <text x="200" y="83" text-anchor="middle" class="node-label" font-size="15">Наш узел</text>
+  <text x="200" y="116" text-anchor="middle" class="sub-label" font-size="11">(CLIENT / CLIENT_BASE)</text>
+
+  <rect x="690" y="54" width="220" height="46" rx="10" class="actorB"/>
+  <text x="800" y="83" text-anchor="middle" class="node-label" font-size="15">Сосед</text>
+  <text x="800" y="116" text-anchor="middle" class="sub-label" font-size="11">(новый, либо вернулся после node_timeout)</text>
+
+  <!-- Линии жизни -->
+  <line x1="200" y1="130" x2="200" y2="824" class="lifeline" stroke-width="1.5" stroke-dasharray="3 4"/>
+  <line x1="800" y1="130" x2="800" y2="824" class="lifeline" stroke-width="1.5" stroke-dasharray="3 4"/>
+
+  <!-- A: маячок присутствия (двусторонний, broadcast) -->
+  <text x="500" y="156" text-anchor="middle" class="label-broadcast" font-size="12.5">маячок присутствия (CLIENT_HELLO / HUB_STATUS)</text>
+  <text x="500" y="169" text-anchor="middle" class="label-broadcast" font-size="12.5">broadcast, периодически — тот же, что питает список соседей F6</text>
+  <line x1="200" y1="178" x2="800" y2="178" class="broadcast" stroke-width="2.5" stroke-dasharray="7 5" marker-start="url(#arrowBroadcast)" marker-end="url(#arrowBroadcast)"/>
+
+  <!-- B: событие — обнаружен новый/вернувшийся сосед -->
+  <use href="#spark" x="189" y="221" width="22" height="22"/>
+  <text x="225" y="228" class="label-event" font-size="12.5">Обнаружен новый / вернувшийся сосед</text>
+  <text x="225" y="244" class="label-event" font-size="12.5">→ внеочередной опрос почты сразу, не ждём тик (до 60с простоя)</text>
+
+  <!-- C: SYNC_REQ раунд 1 — broadcast -->
+  <text x="500" y="292" text-anchor="middle" class="label-broadcast" font-size="12.5">SYNC_REQ — раунд 1 (разведка по эхе)</text>
+  <text x="500" y="305" text-anchor="middle" class="label-broadcast" font-size="12.5">broadcast ^all — без ACK и retry; источников истории может быть несколько</text>
+  <line x1="200" y1="314" x2="800" y2="314" class="broadcast" stroke-width="2.5" stroke-dasharray="7 5" marker-end="url(#arrowBroadcast)"/>
+
+  <!-- D: SYNC_OFFER (ответ на раунд 1) — адресно -->
+  <text x="500" y="358" text-anchor="middle" class="label-addressed" font-size="12.5">SYNC_OFFER — hash-list (адресован в ответ)</text>
+  <line x1="800" y1="372" x2="200" y2="372" class="addressed" stroke-width="2.5" marker-end="url(#arrowAddressed)"/>
+
+  <!-- Решение: дальше — адресно -->
+  <rect x="170" y="394" width="660" height="30" rx="8" class="noteBox" stroke-width="1.5"/>
+  <text x="500" y="413" text-anchor="middle" class="note" font-size="12.5">Узел уже откликнулся в этом опросе → дальше обмен с ним идёт адресно</text>
+
+  <!-- E: SYNC_REQ раунд 2+ — адресно -->
+  <text x="500" y="458" text-anchor="middle" class="label-addressed" font-size="12.5">SYNC_REQ — раунд 2+, адресно (dest_node_id)</text>
+  <text x="500" y="471" text-anchor="middle" class="label-addressed" font-size="12.5">раундовое ACK/retry на уровне отправки фрагментов</text>
+  <line x1="200" y1="482" x2="800" y2="482" class="addressed" stroke-width="2.5" marker-end="url(#arrowAddressed)"/>
+
+  <!-- F: SYNC_OFFER обновлённый -->
+  <text x="500" y="528" text-anchor="middle" class="label-addressed" font-size="12.5">SYNC_OFFER — обновлённый hash-list</text>
+  <line x1="800" y1="542" x2="200" y2="542" class="addressed" stroke-width="2.5" marker-end="url(#arrowAddressed)"/>
+
+  <!-- G: GET_DATA — адресно, по фрагментам -->
+  <text x="500" y="580" text-anchor="middle" class="label-addressed" font-size="12.5">GET_DATA — адресно, по фрагментам</text>
+  <text x="500" y="593" text-anchor="middle" class="label-addressed" font-size="12.5">раундовый retry только недостающих фрагментов</text>
+  <line x1="200" y1="602" x2="800" y2="602" class="addressed" stroke-width="2.5" marker-end="url(#arrowAddressed)"/>
+
+  <!-- H: RESP_DATA — фрагменты письма (поток) -->
+  <text x="500" y="638" text-anchor="middle" class="label-addressed" font-size="12.5">RESP_DATA — письма фрагмент за фрагментом</text>
+  <line x1="800" y1="658" x2="200" y2="658" class="addressed" stroke-width="1.6" marker-end="url(#arrowAddressed)"/>
+  <line x1="800" y1="670" x2="200" y2="670" class="addressed" stroke-width="1.6" marker-end="url(#arrowAddressed)"/>
+  <line x1="800" y1="682" x2="200" y2="682" class="addressed" stroke-width="1.6" marker-end="url(#arrowAddressed)"/>
+
+  <!-- Пояснение про повтор раундов -->
+  <rect x="140" y="712" width="720" height="36" rx="8" class="noteBox" stroke-width="1.5"/>
+  <text x="500" y="734" text-anchor="middle" class="note" font-size="12.5">Раунды выше повторяются, пока сосед виден в эфире, или до отмены опроса пользователем</text>
+
+  <!-- I: событие — письмо сразу в БД, счётчик растёт по факту -->
+  <use href="#spark" x="189" y="777" width="22" height="22"/>
+  <text x="225" y="784" class="label-event" font-size="12.5">Каждое письмо сразу пишется в БД</text>
+  <text x="225" y="800" class="label-event" font-size="12.5">→ счётчик «получено X из Y» в футере растёт по факту, не пакетом в конце</text>
+
+  <!-- Легенда -->
+  <line x1="40" y1="864" x2="90" y2="864" class="broadcast" stroke-width="2.5" stroke-dasharray="7 5" marker-end="url(#arrowBroadcast)"/>
+  <text x="104" y="868" class="legend-text" font-size="12.5">Широковещательно (^all) — без ACK/retry; потеря пакета стоит полного таймаута</text>
+
+  <line x1="40" y1="898" x2="90" y2="898" class="addressed" stroke-width="2.5" marker-end="url(#arrowAddressed)"/>
+  <text x="104" y="902" class="legend-text" font-size="12.5">Адресно (dest_node_id) — раундовое ACK/retry на уровне отправки фрагментов</text>
+
+  <use href="#spark" x="54" y="921" width="22" height="22"/>
+  <text x="104" y="936" class="legend-text" font-size="12.5">Событие/триггер приложения — обнаружение соседа, запись письма в БД</text>
+
+  <rect x="40" y="958" width="50" height="16" rx="6" class="noteBox" stroke-width="1.5"/>
+  <text x="104" y="970" class="legend-text" font-size="12.5">Повторяется, пока адресат виден в эфире (is_node_present), либо до отмены</text>
+</svg>

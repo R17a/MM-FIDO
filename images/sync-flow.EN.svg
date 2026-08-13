@@ -1,0 +1,131 @@
+<svg viewBox="0 0 1000 1010" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', Helvetica, Arial, sans-serif">
+  <style>
+    .card { fill:#f7f8fa; stroke:#d7dbe0; }
+    .node-label { fill:#ffffff; font-weight:600; }
+    .sub-label { fill:#5b6472; }
+    .note { fill:#5b6472; font-style:italic; }
+    .legend-text { fill:#3a4150; }
+    .actorA { fill:#2f6fed; }
+    .actorB { fill:#64748b; }
+    .lifeline { stroke:#c3c9d1; }
+    .broadcast { stroke:#d9822b; fill:#d9822b; }
+    .addressed { stroke:#14b8a6; fill:#14b8a6; }
+    .event { fill:#8b5cf6; }
+    .label-broadcast { fill:#92400e; }
+    .label-addressed { fill:#0f766e; }
+    .label-event { fill:#5b21b6; }
+    .noteBox { fill:none; stroke:#94a3b8; stroke-dasharray:4 3; }
+    @media (prefers-color-scheme: dark) {
+      .card { fill:#1b1e24; stroke:#383d46; }
+      .sub-label { fill:#9aa4b2; }
+      .note { fill:#9aa4b2; }
+      .legend-text { fill:#c7cdd6; }
+      .actorA { fill:#4f8cff; }
+      .actorB { fill:#94a3b8; }
+      .lifeline { stroke:#454b56; }
+      .broadcast { stroke:#f0a94e; fill:#f0a94e; }
+      .addressed { stroke:#2dd4bf; fill:#2dd4bf; }
+      .event { fill:#a78bfa; }
+      .label-broadcast { fill:#f0a94e; }
+      .label-addressed { fill:#5eead4; }
+      .label-event { fill:#c4b5fd; }
+      .noteBox { stroke:#64748b; }
+    }
+    text { font-size:13px; }
+  </style>
+
+  <defs>
+    <marker id="arrowBroadcast" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" class="broadcast"/>
+    </marker>
+    <marker id="arrowAddressed" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" class="addressed"/>
+    </marker>
+    <symbol id="spark" viewBox="-10 -10 20 20">
+      <path d="M0,-10 L2.5,-2.5 L10,0 L2.5,2.5 L0,10 L-2.5,2.5 L-10,0 L-2.5,-2.5 Z" class="event"/>
+    </symbol>
+  </defs>
+
+  <rect x="6" y="6" width="988" height="998" rx="16" class="card" stroke-width="1.5"/>
+
+  <text x="500" y="24" text-anchor="middle" class="note" font-size="13">Mail poll per area: reconnaissance (round 1) is broadcast;</text>
+  <text x="500" y="40" text-anchor="middle" class="note" font-size="13">further exchange with an already-responded node is addressed, with round-based confirmation</text>
+
+  <!-- Actors -->
+  <rect x="90" y="54" width="220" height="46" rx="10" class="actorA"/>
+  <text x="200" y="83" text-anchor="middle" class="node-label" font-size="15">Our node</text>
+  <text x="200" y="116" text-anchor="middle" class="sub-label" font-size="11">(CLIENT / CLIENT_BASE)</text>
+
+  <rect x="690" y="54" width="220" height="46" rx="10" class="actorB"/>
+  <text x="800" y="83" text-anchor="middle" class="node-label" font-size="15">Neighbor</text>
+  <text x="800" y="116" text-anchor="middle" class="sub-label" font-size="11">(new, or back after node_timeout)</text>
+
+  <!-- Lifelines -->
+  <line x1="200" y1="130" x2="200" y2="824" class="lifeline" stroke-width="1.5" stroke-dasharray="3 4"/>
+  <line x1="800" y1="130" x2="800" y2="824" class="lifeline" stroke-width="1.5" stroke-dasharray="3 4"/>
+
+  <!-- A: presence beacon (both ways, broadcast) -->
+  <text x="500" y="156" text-anchor="middle" class="label-broadcast" font-size="12.5">presence beacon (CLIENT_HELLO / HUB_STATUS)</text>
+  <text x="500" y="169" text-anchor="middle" class="label-broadcast" font-size="12.5">broadcast, periodic — the same one that feeds the F6 neighbor list</text>
+  <line x1="200" y1="178" x2="800" y2="178" class="broadcast" stroke-width="2.5" stroke-dasharray="7 5" marker-start="url(#arrowBroadcast)" marker-end="url(#arrowBroadcast)"/>
+
+  <!-- B: event — new/returned neighbor detected -->
+  <use href="#spark" x="189" y="221" width="22" height="22"/>
+  <text x="225" y="228" class="label-event" font-size="12.5">New / returned neighbor detected</text>
+  <text x="225" y="244" class="label-event" font-size="12.5">→ out-of-schedule mail poll right away, no waiting for the tick (up to 60s idle)</text>
+
+  <!-- C: SYNC_REQ round 1 — broadcast -->
+  <text x="500" y="292" text-anchor="middle" class="label-broadcast" font-size="12.5">SYNC_REQ — round 1 (reconnaissance for this area)</text>
+  <text x="500" y="305" text-anchor="middle" class="label-broadcast" font-size="12.5">broadcast ^all — no ACK/retry; there may be more than one history source</text>
+  <line x1="200" y1="314" x2="800" y2="314" class="broadcast" stroke-width="2.5" stroke-dasharray="7 5" marker-end="url(#arrowBroadcast)"/>
+
+  <!-- D: SYNC_OFFER (reply to round 1) — addressed -->
+  <text x="500" y="358" text-anchor="middle" class="label-addressed" font-size="12.5">SYNC_OFFER — hash list (addressed back in reply)</text>
+  <line x1="800" y1="372" x2="200" y2="372" class="addressed" stroke-width="2.5" marker-end="url(#arrowAddressed)"/>
+
+  <!-- Decision: addressed from here on -->
+  <rect x="170" y="394" width="660" height="30" rx="8" class="noteBox" stroke-width="1.5"/>
+  <text x="500" y="413" text-anchor="middle" class="note" font-size="12.5">The node already responded this poll → further exchange with it is addressed</text>
+
+  <!-- E: SYNC_REQ round 2+ — addressed -->
+  <text x="500" y="458" text-anchor="middle" class="label-addressed" font-size="12.5">SYNC_REQ — round 2+, addressed (dest_node_id)</text>
+  <text x="500" y="471" text-anchor="middle" class="label-addressed" font-size="12.5">round-based ACK/retry at the send level</text>
+  <line x1="200" y1="482" x2="800" y2="482" class="addressed" stroke-width="2.5" marker-end="url(#arrowAddressed)"/>
+
+  <!-- F: updated SYNC_OFFER -->
+  <text x="500" y="528" text-anchor="middle" class="label-addressed" font-size="12.5">SYNC_OFFER — updated hash list</text>
+  <line x1="800" y1="542" x2="200" y2="542" class="addressed" stroke-width="2.5" marker-end="url(#arrowAddressed)"/>
+
+  <!-- G: GET_DATA — addressed, by fragment -->
+  <text x="500" y="580" text-anchor="middle" class="label-addressed" font-size="12.5">GET_DATA — addressed, by fragment</text>
+  <text x="500" y="593" text-anchor="middle" class="label-addressed" font-size="12.5">round-based retry for missing fragments only</text>
+  <line x1="200" y1="602" x2="800" y2="602" class="addressed" stroke-width="2.5" marker-end="url(#arrowAddressed)"/>
+
+  <!-- H: RESP_DATA — message fragments (stream) -->
+  <text x="500" y="638" text-anchor="middle" class="label-addressed" font-size="12.5">RESP_DATA — messages, fragment by fragment</text>
+  <line x1="800" y1="658" x2="200" y2="658" class="addressed" stroke-width="1.6" marker-end="url(#arrowAddressed)"/>
+  <line x1="800" y1="670" x2="200" y2="670" class="addressed" stroke-width="1.6" marker-end="url(#arrowAddressed)"/>
+  <line x1="800" y1="682" x2="200" y2="682" class="addressed" stroke-width="1.6" marker-end="url(#arrowAddressed)"/>
+
+  <!-- Round repeat note -->
+  <rect x="140" y="712" width="720" height="36" rx="8" class="noteBox" stroke-width="1.5"/>
+  <text x="500" y="734" text-anchor="middle" class="note" font-size="12.5">The rounds above repeat while the neighbor stays visible on the air, or until the user cancels the poll</text>
+
+  <!-- I: event — message stored right away, counter grows live -->
+  <use href="#spark" x="189" y="777" width="22" height="22"/>
+  <text x="225" y="784" class="label-event" font-size="12.5">Each message is stored in the DB right away</text>
+  <text x="225" y="800" class="label-event" font-size="12.5">→ the footer's "X of Y received" counter grows live, not in one batch at the end</text>
+
+  <!-- Legend -->
+  <line x1="40" y1="864" x2="90" y2="864" class="broadcast" stroke-width="2.5" stroke-dasharray="7 5" marker-end="url(#arrowBroadcast)"/>
+  <text x="104" y="868" class="legend-text" font-size="12.5">Broadcast (^all) — no ACK/retry; a dropped packet costs the full timeout</text>
+
+  <line x1="40" y1="898" x2="90" y2="898" class="addressed" stroke-width="2.5" marker-end="url(#arrowAddressed)"/>
+  <text x="104" y="902" class="legend-text" font-size="12.5">Addressed (dest_node_id) — round-based ACK/retry at the fragment send level</text>
+
+  <use href="#spark" x="54" y="921" width="22" height="22"/>
+  <text x="104" y="936" class="legend-text" font-size="12.5">App-level event/trigger — neighbor detected, message stored in the DB</text>
+
+  <rect x="40" y="958" width="50" height="16" rx="6" class="noteBox" stroke-width="1.5"/>
+  <text x="104" y="970" class="legend-text" font-size="12.5">Repeats while the target stays visible on the air (is_node_present), or until cancelled</text>
+</svg>

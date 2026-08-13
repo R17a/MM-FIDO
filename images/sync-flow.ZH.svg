@@ -1,0 +1,131 @@
+<svg viewBox="0 0 1000 1010" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', Helvetica, Arial, sans-serif">
+  <style>
+    .card { fill:#f7f8fa; stroke:#d7dbe0; }
+    .node-label { fill:#ffffff; font-weight:600; }
+    .sub-label { fill:#5b6472; }
+    .note { fill:#5b6472; font-style:italic; }
+    .legend-text { fill:#3a4150; }
+    .actorA { fill:#2f6fed; }
+    .actorB { fill:#64748b; }
+    .lifeline { stroke:#c3c9d1; }
+    .broadcast { stroke:#d9822b; fill:#d9822b; }
+    .addressed { stroke:#14b8a6; fill:#14b8a6; }
+    .event { fill:#8b5cf6; }
+    .label-broadcast { fill:#92400e; }
+    .label-addressed { fill:#0f766e; }
+    .label-event { fill:#5b21b6; }
+    .noteBox { fill:none; stroke:#94a3b8; stroke-dasharray:4 3; }
+    @media (prefers-color-scheme: dark) {
+      .card { fill:#1b1e24; stroke:#383d46; }
+      .sub-label { fill:#9aa4b2; }
+      .note { fill:#9aa4b2; }
+      .legend-text { fill:#c7cdd6; }
+      .actorA { fill:#4f8cff; }
+      .actorB { fill:#94a3b8; }
+      .lifeline { stroke:#454b56; }
+      .broadcast { stroke:#f0a94e; fill:#f0a94e; }
+      .addressed { stroke:#2dd4bf; fill:#2dd4bf; }
+      .event { fill:#a78bfa; }
+      .label-broadcast { fill:#f0a94e; }
+      .label-addressed { fill:#5eead4; }
+      .label-event { fill:#c4b5fd; }
+      .noteBox { stroke:#64748b; }
+    }
+    text { font-size:13px; }
+  </style>
+
+  <defs>
+    <marker id="arrowBroadcast" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" class="broadcast"/>
+    </marker>
+    <marker id="arrowAddressed" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" class="addressed"/>
+    </marker>
+    <symbol id="spark" viewBox="-10 -10 20 20">
+      <path d="M0,-10 L2.5,-2.5 L10,0 L2.5,2.5 L0,10 L-2.5,2.5 L-10,0 L-2.5,-2.5 Z" class="event"/>
+    </symbol>
+  </defs>
+
+  <rect x="6" y="6" width="988" height="998" rx="16" class="card" stroke-width="1.5"/>
+
+  <text x="500" y="24" text-anchor="middle" class="note" font-size="13">按信区轮询邮件：第 1 轮（勘测）是广播方式；</text>
+  <text x="500" y="40" text-anchor="middle" class="note" font-size="13">与已经响应过的节点之间的后续交换是定向的，并带有分轮确认</text>
+
+  <!-- 参与者 -->
+  <rect x="90" y="54" width="220" height="46" rx="10" class="actorA"/>
+  <text x="200" y="83" text-anchor="middle" class="node-label" font-size="15">本节点</text>
+  <text x="200" y="116" text-anchor="middle" class="sub-label" font-size="11">(CLIENT / CLIENT_BASE)</text>
+
+  <rect x="690" y="54" width="220" height="46" rx="10" class="actorB"/>
+  <text x="800" y="83" text-anchor="middle" class="node-label" font-size="15">邻居节点</text>
+  <text x="800" y="116" text-anchor="middle" class="sub-label" font-size="11">（新出现，或 node_timeout 后重新出现）</text>
+
+  <!-- 生命线 -->
+  <line x1="200" y1="130" x2="200" y2="824" class="lifeline" stroke-width="1.5" stroke-dasharray="3 4"/>
+  <line x1="800" y1="130" x2="800" y2="824" class="lifeline" stroke-width="1.5" stroke-dasharray="3 4"/>
+
+  <!-- A：存在心跳信标（双向，广播） -->
+  <text x="500" y="156" text-anchor="middle" class="label-broadcast" font-size="12.5">存在心跳信标 (CLIENT_HELLO / HUB_STATUS)</text>
+  <text x="500" y="169" text-anchor="middle" class="label-broadcast" font-size="12.5">广播，周期性发送——与 F6 邻居列表同源</text>
+  <line x1="200" y1="178" x2="800" y2="178" class="broadcast" stroke-width="2.5" stroke-dasharray="7 5" marker-start="url(#arrowBroadcast)" marker-end="url(#arrowBroadcast)"/>
+
+  <!-- B：事件——检测到新的/重新出现的邻居 -->
+  <use href="#spark" x="189" y="221" width="22" height="22"/>
+  <text x="225" y="228" class="label-event" font-size="12.5">检测到新的 / 重新出现的邻居</text>
+  <text x="225" y="244" class="label-event" font-size="12.5">→ 立即触发计划外邮件轮询，不等待下一周期（最多空等 60 秒）</text>
+
+  <!-- C：SYNC_REQ 第 1 轮——广播 -->
+  <text x="500" y="292" text-anchor="middle" class="label-broadcast" font-size="12.5">SYNC_REQ — 第 1 轮（该信区的勘测）</text>
+  <text x="500" y="305" text-anchor="middle" class="label-broadcast" font-size="12.5">广播 ^all——无 ACK/重传；历史来源可能不止一个</text>
+  <line x1="200" y1="314" x2="800" y2="314" class="broadcast" stroke-width="2.5" stroke-dasharray="7 5" marker-end="url(#arrowBroadcast)"/>
+
+  <!-- D：SYNC_OFFER（对第 1 轮的应答）——定向 -->
+  <text x="500" y="358" text-anchor="middle" class="label-addressed" font-size="12.5">SYNC_OFFER — 哈希列表（定向应答）</text>
+  <line x1="800" y1="372" x2="200" y2="372" class="addressed" stroke-width="2.5" marker-end="url(#arrowAddressed)"/>
+
+  <!-- 决策：此后转为定向 -->
+  <rect x="170" y="394" width="660" height="30" rx="8" class="noteBox" stroke-width="1.5"/>
+  <text x="500" y="413" text-anchor="middle" class="note" font-size="12.5">该节点本轮已经应答过 → 之后与它的交换转为定向进行</text>
+
+  <!-- E：SYNC_REQ 第 2 轮及以后——定向 -->
+  <text x="500" y="458" text-anchor="middle" class="label-addressed" font-size="12.5">SYNC_REQ — 第 2 轮及以后，定向 (dest_node_id)</text>
+  <text x="500" y="471" text-anchor="middle" class="label-addressed" font-size="12.5">在发送层面进行分轮 ACK/重传</text>
+  <line x1="200" y1="482" x2="800" y2="482" class="addressed" stroke-width="2.5" marker-end="url(#arrowAddressed)"/>
+
+  <!-- F：更新后的 SYNC_OFFER -->
+  <text x="500" y="528" text-anchor="middle" class="label-addressed" font-size="12.5">SYNC_OFFER — 更新后的哈希列表</text>
+  <line x1="800" y1="542" x2="200" y2="542" class="addressed" stroke-width="2.5" marker-end="url(#arrowAddressed)"/>
+
+  <!-- G：GET_DATA——定向，按分片 -->
+  <text x="500" y="580" text-anchor="middle" class="label-addressed" font-size="12.5">GET_DATA — 定向，按分片</text>
+  <text x="500" y="593" text-anchor="middle" class="label-addressed" font-size="12.5">仅对缺失的分片进行分轮重传</text>
+  <line x1="200" y1="602" x2="800" y2="602" class="addressed" stroke-width="2.5" marker-end="url(#arrowAddressed)"/>
+
+  <!-- H：RESP_DATA——消息分片（流式） -->
+  <text x="500" y="638" text-anchor="middle" class="label-addressed" font-size="12.5">RESP_DATA — 消息按分片依次返回</text>
+  <line x1="800" y1="658" x2="200" y2="658" class="addressed" stroke-width="1.6" marker-end="url(#arrowAddressed)"/>
+  <line x1="800" y1="670" x2="200" y2="670" class="addressed" stroke-width="1.6" marker-end="url(#arrowAddressed)"/>
+  <line x1="800" y1="682" x2="200" y2="682" class="addressed" stroke-width="1.6" marker-end="url(#arrowAddressed)"/>
+
+  <!-- 轮次重复说明 -->
+  <rect x="140" y="712" width="720" height="36" rx="8" class="noteBox" stroke-width="1.5"/>
+  <text x="500" y="734" text-anchor="middle" class="note" font-size="12.5">以上各轮持续进行，直到邻居不再出现在无线电范围内，或用户手动取消轮询</text>
+
+  <!-- I：事件——消息立即入库，计数器实时增长 -->
+  <use href="#spark" x="189" y="777" width="22" height="22"/>
+  <text x="225" y="784" class="label-event" font-size="12.5">每封消息一到就立即写入数据库</text>
+  <text x="225" y="800" class="label-event" font-size="12.5">→ 页脚“已收到 X / Y”计数器实时增长，而非最后一次性批量更新</text>
+
+  <!-- 图例 -->
+  <line x1="40" y1="864" x2="90" y2="864" class="broadcast" stroke-width="2.5" stroke-dasharray="7 5" marker-end="url(#arrowBroadcast)"/>
+  <text x="104" y="868" class="legend-text" font-size="12.5">广播 (^all) — 无 ACK/重传；丢包将付出完整超时代价</text>
+
+  <line x1="40" y1="898" x2="90" y2="898" class="addressed" stroke-width="2.5" marker-end="url(#arrowAddressed)"/>
+  <text x="104" y="902" class="legend-text" font-size="12.5">定向 (dest_node_id) — 在分片发送层面进行分轮 ACK/重传</text>
+
+  <use href="#spark" x="54" y="921" width="22" height="22"/>
+  <text x="104" y="936" class="legend-text" font-size="12.5">应用层事件/触发——检测到邻居、消息写入数据库</text>
+
+  <rect x="40" y="958" width="50" height="16" rx="6" class="noteBox" stroke-width="1.5"/>
+  <text x="104" y="970" class="legend-text" font-size="12.5">只要目标仍在无线电范围内可见 (is_node_present) 就会重复，否则会被取消</text>
+</svg>
