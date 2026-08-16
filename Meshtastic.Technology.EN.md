@@ -179,7 +179,17 @@ determines the node's behavior in the network:
 
 ## 3. Data Delivery (general outline)
 
+> **Short version:** a neighbor appearing on the air triggers a broadcast
+> "who has mail for this area" question (round 1) — this is reconnaissance,
+> not a greeting aimed at one specific node, and more than one neighbor can
+> answer. But only the **first** reply that arrives is used — the rest are
+> silently discarded, and every further exchange (rounds 2+, including for
+> other areas in the same poll) is addressed to that one node. That's what
+> keeps several CLIENT_BASE nodes from all sending the same history at once.
+
 ![Mail poll interaction: neighbor detection, broadcast reconnaissance, addressed exchange](images/sync-flow.EN.svg)
+
+![Node algorithm during a mail poll: step-by-step decision flow for one heard neighbor](images/sync-flow-algo.EN.svg)
 
 Messages (echomail, netmail, control commands) pass through a single packing
 and fragmentation pipeline (`PackerEngine`) before going out over the air,
@@ -198,14 +208,34 @@ tied to a single fixed node.
 A new or newly-returned neighbor appearing on the air (via the same presence
 beacon that feeds the neighbor list on **F6**) immediately triggers an
 out-of-schedule mail poll, instead of waiting for the next periodic cycle (up
-to a minute of pointless idling). Any further exchange with that
-already-responded node within this poll is addressed, not broadcast: repeat
-sync requests for an area the node already answered for go to it alone, with
-full round-based confirmation at the send level, rather than blindly
-broadcasting again to everyone. The very first request for each area (the
-reconnaissance round, before any confirmed contact) deliberately stays
-broadcast — there may be more than one source of history, and different
-infrastructure nodes can have different replication levels.
+to a minute of pointless idling). That beacon isn't a one-time "introduction"
+aimed at a specific node — it's a continuous background signal both nodes
+keep sending each other periodically while on the air; detecting a
+new/returned neighbor is simply a trigger fired when such a beacon arrives.
+
+The very first sync request for each area (the reconnaissance round, before
+any confirmed contact) deliberately stays broadcast ("^all") — there may be
+more than one source of history, and different infrastructure nodes can have
+different replication levels, so there's no point asking only one
+pre-selected neighbor. More than one neighbor can answer that broadcast
+question — but only the **first** reply to arrive is used: any other
+SYNC_OFFERs, even if they do get through, are simply discarded unprocessed.
+Any further exchange within this poll — rounds 2+, `GET_DATA`, `RESP_DATA` —
+is addressed to that one node only, never to several in parallel. On real
+radio this rule extends beyond a single area, too: as soon as any neighbor
+answers, it becomes the reconnaissance target for the rest of the subscribed
+areas in the same poll as well, instead of paying a full broadcast timeout
+for each area separately.
+
+This is a deliberate design choice, not a side effect: heavy traffic
+(`RESP_DATA`, message fragments) physically comes from one source at a time,
+so several CLIENT_BASE nodes holding the same history for an area can't end
+up simultaneously sending the same new messages and doubling airtime traffic.
+As a backstop against duplication anyway (say, a message arrives via catch-up
+in one round while also being pushed by a neighbor through a different
+replication path at the same time), storage by `msg_id` ignores repeats
+(`INSERT OR IGNORE`), so a duplicate simply won't be stored twice even if it
+did get through.
 
 Beyond packing and fragmentation themselves, the same pipeline also saves
 airtime and stays resilient under channel congestion: protocol-aware
