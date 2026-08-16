@@ -75,7 +75,7 @@
   <text x="610" y="197" text-anchor="middle" class="node-label" font-size="13">CLIENT</text>
   <text x="610" y="213" text-anchor="middle" class="node-label" font-size="13">_BASE</text>
 
-  <!-- 节点：技术节点（无头设备，无 PC 或应用 —— 见 Technology.md 第 1 节） -->
+  <!-- 节点：技术节点（无头设备，无 PC 或应用 —— 见 Meshtastic.Technology.md 第 1 节） -->
   <circle cx="860" cy="200" r="42" class="tech"/>
   <text x="860" y="197" text-anchor="middle" class="node-label" font-size="13">技术</text>
   <text x="860" y="213" text-anchor="middle" class="node-label" font-size="13">节点</text>

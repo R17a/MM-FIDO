@@ -22,7 +22,7 @@ it's the same TUI application — the difference between types is defined by
 the **device role** (see section 2) and whether the node runs a background
 service that shares history with neighbors.
 
-![Meshtastic-FIDO network topology](images/topology.EN.svg)
+![Meshtastic-FIDO network topology](images/Meshtastic/topology.EN.svg)
 
 Any two nodes within radio range connect over LoRa directly — the network
 is flat, with no hierarchy and no single mandatory intermediary. CLIENT_BASE
@@ -117,7 +117,7 @@ encounter is a strong freshness signal (it means the node could have just
 updated), but it isn't the only way to get current mail — a node that
 replicated earlier and is now temporarily offline can serve it just as well.
 
-![Cross-city mail relay and a migrating CLIENT](images/topology-cities.EN.svg)
+![Cross-city mail relay and a migrating CLIENT](images/Meshtastic/topology-cities.EN.svg)
 
 **Conditions under which the chain above actually works (important caveats,
 2026-08-06):**
@@ -157,7 +157,7 @@ replicated earlier and is now temporarily offline can serve it just as well.
 The role is read from the firmware of the connected Meshtastic device and
 determines the node's behavior in the network:
 
-![Meshtastic device roles](images/roles.EN.svg)
+![Meshtastic device roles](images/Meshtastic/roles.EN.svg)
 
 ### How the role affects network behavior
 - Every node — client or infrastructure — independently stores its own mail
@@ -187,9 +187,9 @@ determines the node's behavior in the network:
 > other areas in the same poll) is addressed to that one node. That's what
 > keeps several CLIENT_BASE nodes from all sending the same history at once.
 
-![Mail poll interaction: neighbor detection, broadcast reconnaissance, addressed exchange](images/sync-flow.EN.svg)
+![Mail poll interaction: neighbor detection, broadcast reconnaissance, addressed exchange](images/Meshtastic/sync-flow.EN.svg)
 
-![Node algorithm during a mail poll: step-by-step decision flow for one heard neighbor](images/sync-flow-algo.EN.svg)
+![Node algorithm during a mail poll: step-by-step decision flow for one heard neighbor](images/Meshtastic/sync-flow-algo.EN.svg)
 
 Messages (echomail, netmail, control commands) pass through a single packing
 and fragmentation pipeline (`PackerEngine`) before going out over the air,

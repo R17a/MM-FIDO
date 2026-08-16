@@ -1,4 +1,4 @@
-<svg viewBox="0 0 1000 1010" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', Helvetica, Arial, sans-serif">
+<svg viewBox="0 0 1000 1060" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', Helvetica, Arial, sans-serif">
   <style>
     .card { fill:#f7f8fa; stroke:#d7dbe0; }
     .node-label { fill:#ffffff; font-weight:600; }
@@ -15,6 +15,8 @@
     .label-addressed { fill:#0f766e; }
     .label-event { fill:#5b21b6; }
     .noteBox { fill:none; stroke:#94a3b8; stroke-dasharray:4 3; }
+    .calloutBox { fill:#e6fbf8; stroke:#0f766e; }
+    .callout-text { fill:#0f766e; }
     @media (prefers-color-scheme: dark) {
       .card { fill:#1b1e24; stroke:#383d46; }
       .sub-label { fill:#9aa4b2; }
@@ -30,6 +32,8 @@
       .label-addressed { fill:#5eead4; }
       .label-event { fill:#c4b5fd; }
       .noteBox { stroke:#64748b; }
+      .calloutBox { fill:#0f2e2b; stroke:#2dd4bf; }
+      .callout-text { fill:#5eead4; }
     }
     text { font-size:13px; }
   </style>
@@ -46,10 +50,10 @@
     </symbol>
   </defs>
 
-  <rect x="6" y="6" width="988" height="998" rx="16" class="card" stroke-width="1.5"/>
+  <rect x="6" y="6" width="988" height="1048" rx="16" class="card" stroke-width="1.5"/>
 
   <text x="500" y="24" text-anchor="middle" class="note" font-size="13">Mail poll per area: reconnaissance (round 1) is broadcast;</text>
-  <text x="500" y="40" text-anchor="middle" class="note" font-size="13">further exchange with an already-responded node is addressed, with round-based confirmation</text>
+  <text x="500" y="40" text-anchor="middle" class="note" font-size="13">further exchange is addressed — with the first node to respond only — with round-based confirmation</text>
 
   <!-- Actors -->
   <rect x="90" y="54" width="220" height="46" rx="10" class="actorA"/>
@@ -128,4 +132,9 @@
 
   <rect x="40" y="958" width="50" height="16" rx="6" class="noteBox" stroke-width="1.5"/>
   <text x="104" y="970" class="legend-text" font-size="12.5">Repeats while the target stays visible on the air (is_node_present), or until cancelled</text>
+
+  <!-- Explicit callout: exactly one node is used — the first responder — no parallel sources -->
+  <rect x="30" y="994" width="940" height="56" rx="10" class="calloutBox" stroke-width="1.5"/>
+  <text x="500" y="1015" text-anchor="middle" class="callout-text" font-weight="600" font-size="12.5">Note: exactly ONE node is used — whichever SYNC_OFFER arrives first. Replies from other neighbors are silently discarded.</text>
+  <text x="500" y="1033" text-anchor="middle" class="callout-text" font-size="12.5">That same node also becomes the target for the other areas in this poll — no parallel RESP_DATA sources, no duplicate traffic.</text>
 </svg>

@@ -18,7 +18,7 @@ Meshtastic-FIDO 是一个基于经典 FidoNet / GoldED 编辑器理念、构建�
 类型之间的区别由**设备角色**决定（见第 2 节），以及该节点是否运行向邻近
 节点分发历史消息的后台服务。
 
-![Meshtastic-FIDO 网络拓扑](images/topology.ZH.svg)
+![Meshtastic-FIDO 网络拓扑](images/Meshtastic/topology.ZH.svg)
 
 任意两个处于无线电通信范围内的节点都通过 LoRa 直接连接——网络是扁平的，
 没有层级结构，也没有唯一的必经中介。图中之所以单独标出 CLIENT_BASE 和
@@ -93,7 +93,7 @@ CLIENT_BASE 都曾接入互联网并建立了桥接（见上文），它们之�
 并非获取最新邮件的唯一条件——一个提前完成复制、当前暂时离线的节点同样能够
 提供最新邮件。
 
-![跨城市邮件中继与迁移中的 CLIENT](images/topology-cities.ZH.svg)
+![跨城市邮件中继与迁移中的 CLIENT](images/Meshtastic/topology-cities.ZH.svg)
 
 **上述链路真正生效所需的条件（重要说明，2026-08-06）：**
 
@@ -123,7 +123,7 @@ CLIENT_BASE 都曾接入互联网并建立了桥接（见上文），它们之�
 
 角色从所连接的 Meshtastic 设备固件中读取，并决定该节点在网络中的行为：
 
-![Meshtastic 设备角色](images/roles.ZH.svg)
+![Meshtastic 设备角色](images/Meshtastic/roles.ZH.svg)
 
 ### 角色如何影响网络行为
 - 每个节点——无论客户端类还是基础设施类——都独立地在自己的本地数据库中
@@ -147,9 +147,9 @@ CLIENT_BASE 都曾接入互联网并建立了桥接（见上文），它们之�
 > 全部交换（第 2 轮及以后，包括本次轮询中的其他信区）都只对这一个节点定向
 > 进行。这正是为了避免多个 CLIENT_BASE 同时发送同一份历史数据。
 
-![邮件轮询交互：邻居检测、广播勘测、定向交换](images/sync-flow.ZH.svg)
+![邮件轮询交互：邻居检测、广播勘测、定向交换](images/Meshtastic/sync-flow.ZH.svg)
 
-![节点在邮件轮询中的算法：针对单个已听到邻居的分步决策流程](images/sync-flow-algo.ZH.svg)
+![节点在邮件轮询中的算法：针对单个已听到邻居的分步决策流程](images/Meshtastic/sync-flow-algo.ZH.svg)
 
 消息（信区邮件、netmail、控制指令）在发往空口之前，都会经过统一的打包与
 分片流水线（`PackerEngine`）——将其限制在 LoRa 无线信道的 MTU 范围内，
