@@ -57,6 +57,15 @@ messages to neighboring clients that return to the air. This is the closest
 analogue of a "point" in FidoNet terminology. Internet access is optional
 for such a node, not required — see below.
 
+Beyond sharing its own subscriptions with neighbors, a `CLIENT_BASE` also
+actively mirrors the FULL catalog of any other `CLIENT_BASE` it meets — not
+just the areas it happens to be subscribed to itself. Before its usual
+subscription sweep, such a node asks a neighboring infrastructure node for
+its full area list and adopts whatever it didn't already know about locally
+— those areas then replicate through the same two-way mechanism as regular
+subscriptions. A plain `CLIENT` doesn't do this — it still only catches up
+on history for areas it's actually subscribed to, same as before.
+
 ### Infrastructure relay node (`ROUTER` / `ROUTER_LATE`)
 Extends the network's radio range by relaying packets further, including to
 nodes outside direct range.
@@ -78,10 +87,13 @@ fragmentation don't change at all, packets are simply also relayed through
 the broker instead of (or alongside) the radio link. Both sides need
 matching broker settings and channel key — configured on the board itself
 (official Meshtastic app/CLI), not by this application.
-The network policy (see the consent screen shown on first launch) requires
-using the single public broker `mqtt.meshtastic.org` for this bridge —
-private brokers are prohibited, since they make traffic invisible to the
-Root Node and split the network's moderation unity.
+By default this uses the shared public broker `mqtt.meshtastic.org`; if it's
+congested with unrelated traffic (it's shared by the whole Meshtastic network,
+not just Meshtastic-FIDO), a less congested project broker is available instead
+— connection details in `helpme.md`, section 9. Both bridge sides need to match
+on the same broker for a direct MQTT exchange, but a mismatched choice doesn't
+split the network as a whole — nodes still find each other via DHT/Relay (see
+below).
 
 **Practical consequence (confirmed on real hardware, 2026-08-06):** the
 actual TCP connection to the broker is held by THIS APPLICATION — i.e. the
@@ -146,9 +158,61 @@ replicated earlier and is now temporarily offline can serve it just as well.
   (see the point above). Metadata for other people's mail (subject, sender,
   date) — not just the encrypted body — isn't sent to such a client at all.
 - **Both bridge-side CLIENT_BASE nodes must be configured with the same
-  channel/PSK and the single `mqtt.meshtastic.org` broker** (see above) —
-  without this, the two cities simply can't hear each other through the
-  bridge, regardless of everything else.
+  channel/PSK and the same broker** (`mqtt.meshtastic.org` or the project's
+  own, see above) — without this, the two cities simply can't hear each
+  other through the bridge, regardless of everything else (but they'll still
+  find each other via DHT/Relay below — slower than a direct bridge, but
+  without this manual setup).
+
+### Fallback path for nodes without a shared MQTT channel — DHT discovery and relay
+The MQTT bridge above needs manual upfront setup — both CLIENT_BASE nodes have
+to already agree on the same channel/PSK. For nodes without that prior
+arrangement (or that haven't made one yet), the app can find each other and
+exchange mail a different way, entirely independent of the board's firmware
+and its MQTT proxy — through the plain internet connection of the computer
+the app itself runs on.
+
+Discovery is built on top of an already-existing, decades-old public network
+(the same technology torrent clients use to find swarms without a central
+server) — nodes find each other by a shared network identifier, without
+publishing anything about the content of the correspondence: the DHT is used
+purely as a directory of "who else is on the network and what address to
+look for them at" — mail exchange itself still goes directly between nodes
+over the app's own protocol, same as always.
+
+Once two nodes find each other, they try to connect directly over TCP/IP. If
+that fails — a common situation when both nodes sit behind a home router or a
+mobile carrier without an external IP address (NAT/CGNAT) — a helper relay
+server is used instead: both nodes connect to it with an outbound connection
+(which works almost everywhere, even where inbound connections are blocked),
+and it simply forwards the same encrypted/signed packets between them,
+without any more access to their content than any intermediate node on a
+message's path over the radio would have.
+
+**An active VPN on the computer/router interferes with this direct path
+specifically** — the app determines its own externally-visible address to
+find itself in DHT results and avoid dialing itself; with a VPN active, that
+address ends up being the VPN server's, not the one the node actually
+listens on, and the direct connection may fail or be slower. It's best to
+turn VPN off for the duration of field tests of this path; radio and the
+MQTT bridge aren't affected by it.
+
+This path doesn't replace the MQTT bridge (that one serves a different
+purpose — routine exchange between cities that have already arranged to work
+together) and needs no manual setup from a regular user — given internet
+access, it works automatically in the background, as an extra way to find
+correspondents beyond direct radio range.
+
+### Local-network discovery — no internet needed at all
+Separate from the DHT/relay path above (both need an internet connection),
+the app can also find neighbors within a single local network — for example,
+in an office or institution where several nodes share a common wired or
+Wi-Fi network. This discovery needs no internet at all and doesn't depend on
+DHT: nodes simply announce themselves with a broadcast within the local
+network and find each other right away. If that same local network has a
+node with internet access, it naturally becomes a bridge — syncing with both
+its local neighbors and the wider world via DHT/relay, and carrying mail
+between the two the same two-way way it does everywhere else in the network.
 
 ---
 
@@ -226,6 +290,17 @@ radio this rule extends beyond a single area, too: as soon as any neighbor
 answers, it becomes the reconnaissance target for the rest of the subscribed
 areas in the same poll as well, instead of paying a full broadcast timeout
 for each area separately.
+
+That addressed reconnaissance for the remaining subscriptions is itself
+batched into a single request rather than one round-trip per area: the list
+of areas goes out in one `SYNC_REQ` and comes back in one `SYNC_OFFER`
+carrying an offer for each of them. The number of reconnaissance round-trips
+stops growing linearly with the number of subscriptions — five subscribed
+areas mean one combined request-response, not five sequential radio
+round-trips in a row. Only the reconnaissance itself ("who has what") is
+batched this way; the follow-up addressed catch-up per area for missing
+messages (`GET_DATA`/`RESP_DATA`) stays separate for each area, same as
+before.
 
 This is a deliberate design choice, not a side effect: heavy traffic
 (`RESP_DATA`, message fragments) physically comes from one source at a time,
