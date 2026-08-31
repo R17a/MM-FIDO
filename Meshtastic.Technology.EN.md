@@ -277,6 +277,18 @@ aimed at a specific node — it's a continuous background signal both nodes
 keep sending each other periodically while on the air; detecting a
 new/returned neighbor is simply a trigger fired when such a beacon arrives.
 
+On a graceful exit the node sends one final "leaving" marker over that same
+beacon, so neighbors drop it from the **F6** list right away instead of
+holding it for several more minutes on the silence timeout (Meshtastic has
+no "disconnected" packet, so departure is normally inferred from silence).
+If that farewell beacon is lost on the air, the old timeout still applies —
+the node just disappears a little later. The transport column in **F6**
+shows the carrier of the last protocol frame actually received from the
+node (radio, MQTT, direct internet connection, or relay), not the
+board's cached record, which can go stale; the footer "Internet: ✓"
+indicator lights up for any working internet path — the MQTT bridge as
+well as a direct connection / DHT (see below).
+
 The very first sync request for each area (the reconnaissance round, before
 any confirmed contact) deliberately stays broadcast ("^all") — there may be
 more than one source of history, and different infrastructure nodes can have
@@ -359,3 +371,18 @@ message, and the receiving side remembers it the first time it's seen. On a
 later mismatch, the key is not silently overwritten — the same fundamental
 trade-off any TOFU scheme makes (the impersonation risk exists only at the
 very first encounter between two nodes).
+
+The same application key signs not just the messages but also the presence
+beacon (the one that feeds the **F6** neighbor list: "node is here", hub
+status, version numbers). That signature is checked on every transport — over
+radio, through any MQTT broker, over a direct internet connection — so a
+neighbor's authenticity does not depend on which broker it uses or on how
+loaded the public broker is. A node whose beacon passes the signature check
+is marked with a check in **F6**; a beacon signed with a different key than
+before raises a log warning (possible node-identity spoofing), and a forged
+"farewell" signal carrying someone else's id is ignored. A timestamp inside
+the signature guards against replay of a previously captured beacon.
+Separately, the app also records each node's board "fingerprint" (the
+Meshtastic firmware's hardware key) and logs it if it changes — a reflash,
+factory reset, or spoof; the change is accepted automatically and does not
+block the network.
