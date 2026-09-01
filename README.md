@@ -32,6 +32,11 @@ A decentralized offline echo-conference network (in the spirit of Fidonet and th
 
 <table>
   <tr>
+    <td>Donation Alerts</td>
+    <td><img src="https://vectorseek.com/wp-content/uploads/2024/01/DonationAlerts-Logo-Vector.svg-.png" alt="DA" width="30" height="30"></td>
+    <td><a href="https://www.donationalerts.com/r/dmitriy_r17a" target="_blank">https://www.donationalerts.com/r/dmitriy_r17a</a></td>
+  </tr>
+  <tr>
     <td>Bitcoin BTC</td>
     <td><img src="https://cdn-icons-png.flaticon.com/128/5968/5968260.png" alt="BTC" width="30" height="30"></td>
     <td>bc1q7gz0gn6hjpcad4yvmq9t47sqv5tk2zw9kfxkpp</td>
