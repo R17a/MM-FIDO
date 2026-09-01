@@ -112,8 +112,9 @@
   <line x1="800" y1="682" x2="200" y2="682" class="addressed" stroke-width="1.6" marker-end="url(#arrowAddressed)"/>
 
   <!-- Пояснение про повтор раундов -->
-  <rect x="140" y="712" width="720" height="36" rx="8" class="noteBox" stroke-width="1.5"/>
-  <text x="500" y="734" text-anchor="middle" class="note" font-size="12.5">Раунды выше повторяются, пока сосед виден в эфире, или до отмены опроса пользователем</text>
+  <rect x="80" y="708" width="840" height="52" rx="8" class="noteBox" stroke-width="1.5"/>
+  <text x="500" y="728" text-anchor="middle" class="note" font-size="12.5">Раунды выше повторяются, пока сосед виден в эфире, или до отмены опроса пользователем</text>
+  <text x="500" y="746" text-anchor="middle" class="note" font-size="12">Если сосед сам качает у нас — встречный push откладываем до следующего цикла, чтобы не забивать канал с обеих сторон</text>
 
   <!-- I: событие — письмо сразу в БД, счётчик растёт по факту -->
   <use href="#spark" x="189" y="777" width="22" height="22"/>
@@ -122,7 +123,7 @@
 
   <!-- Легенда -->
   <line x1="40" y1="864" x2="90" y2="864" class="broadcast" stroke-width="2.5" stroke-dasharray="7 5" marker-end="url(#arrowBroadcast)"/>
-  <text x="104" y="868" class="legend-text" font-size="12.5">Широковещательно (^all) — без ACK/retry; потеря пакета стоит полного таймаута</text>
+  <text x="104" y="868" class="legend-text" font-size="12.5">Широковещательно (^all) — без ACK/retry; короткий таймаут пробника с пересылкой, дальше внешний цикл пробует снова</text>
 
   <line x1="40" y1="898" x2="90" y2="898" class="addressed" stroke-width="2.5" marker-end="url(#arrowAddressed)"/>
   <text x="104" y="902" class="legend-text" font-size="12.5">Адресно (dest_node_id) — раундовое ACK/retry на уровне отправки фрагментов</text>

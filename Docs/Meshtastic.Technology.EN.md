@@ -237,7 +237,49 @@ determines the node's behavior in the network:
   node is acting as infrastructure or as a regular client; the visible
   neighbor counters show how many nodes of each type are nearby.
 - The client obtains the list of available echo areas from any available
-  infrastructure node — not necessarily always the same one.
+  infrastructure node — not necessarily always the same one (subject to the
+  geo-filter, see below).
+
+### Echo-area catalog: geography of subscription
+
+Echo areas are either **global** or **regional**. Global ones — `SYS.*` and
+the language areas (`RU.TALK`, `EN.TALK`) — are subscribed by everyone by
+default and held on every node. Regional ones are named
+`<COUNTRY>.<REGION>.<TOPIC>` (`RU.MSK.TALK`, `DE.BER.MEET`) — two geographic
+levels, roughly like the echo tags of classic FidoNet. The geographic scope
+is part of the echo's own record, not just its name.
+
+**Subscribing (key `S`) goes through the hub's catalog** and is built as a
+cascade of two short requests, so a list of hundreds of other cities never
+has to travel over LoRa: the node first asks for the "index" (the list of
+countries and regions — tens of short lines with no echo names), then for the
+echo names of the chosen place only. Ticked echoes are added to the
+subscription (`+AREA` / `%JOIN`). LoRa traffic is hundreds of bytes instead
+of kilobytes, regardless of network size. Global echoes are not shown in the
+dialog (they are already subscribed); a flat `CLIENT` with no infrastructure
+node in range has nothing to browse — the dialog is blocked in that case,
+while an infrastructure node shows the catalog from its own database.
+
+**Which regions a node cares about is set in `config.json` (`echo_regions`, a
+first-run wizard step).** The filter applies **only to a node without
+internet**: a node with internet always receives and serves the full catalog
+of every region (internet hubs deliberately take on full replication). For a
+LoRa-only node an empty list means "global echoes only". A `CLIENT_BASE`
+without internet likewise replicates only its own region and the global
+echoes, plus whatever it has subscribed to by hand. To subscribe to a distant
+region you need a hub that actually carries those echoes (usually an internet
+hub): a hub of your own region simply doesn't store them over radio.
+
+**An echo area cannot be created from the subscribe dialog** — the user only
+subscribes. Creating a new echo is a separate process with manual approval by
+the root node's operator: a signed request travels by personal mail (NETMAIL)
+to the root node, the operator approves or rejects it, and the signed record
+spreads across the network by ordinary sync; only approved echoes make it
+into the shared catalog. The same signed-record mechanism drives moderation
+(freeze an echo, retract a message, block an author) — applied on receipt,
+with no physical deletion. This process is in progress.
+
+![Echo-area catalog: global and regional echoes, geo-filtered subscription, echo creation via the operator](images/Meshtastic/catalog-geo.EN.svg)
 
 ---
 
@@ -268,6 +310,14 @@ infrastructure node meets one, or meets another client), they exchange
 whatever messages the other one is missing in both directions — not just
 "the client pulls from the hub." Either side can serve the catch-up; it isn't
 tied to a single fixed node.
+
+Between two infrastructure nodes this counter-exchange is also spread out in
+time: while one side is pulling history from the other, the second side holds
+its own counter-push and resumes it on the next cycle. That keeps two base
+stations from flooding the half-duplex radio channel from both ends at once
+(which under a mutual burst used to stall the send queue for a long time);
+the "the peer is pulling from us" mark expires on its own, and if the peer is
+still missing something the next cycle delivers it.
 
 A new or newly-returned neighbor appearing on the air (via the same presence
 beacon that feeds the neighbor list on **F6**) immediately triggers an
@@ -303,6 +353,13 @@ answers, it becomes the reconnaissance target for the rest of the subscribed
 areas in the same poll as well, instead of paying a full broadcast timeout
 for each area separately.
 
+The broadcast probe itself waits only briefly for an answer — on the order of
+the presence-beacon interval, not the long timeout calibrated for a
+multi-fragment reply full of messages (a probe reply is always a single
+fragment). If nobody answers within that window (with a few probe resends
+inside it), the outer poll loop quickly tries again and more often catches
+the neighbor at a moment when it is free from transmitting.
+
 That addressed reconnaissance for the remaining subscriptions is itself
 batched into a single request rather than one round-trip per area: the list
 of areas goes out in one `SYNC_REQ` and comes back in one `SYNC_OFFER`
@@ -337,6 +394,15 @@ unacknowledged after a confirmation round are selectively resent — only the
 missing pieces, not the whole message — for as long as the recipient stays
 visible on the air, or until the user manually cancels the mail poll. See
 `helpme.md`, section 13, for details.
+
+How a node spaces the fragments of one frame over time — all at once, one by
+one, or in small batches that wait for acknowledgement — is a local sender-side
+setting (a field-test knob for pure LoRa). It is not part of the frame format
+and is not negotiated with the peer in any way: the receiving side reassembles
+fragments identically regardless, and anything that does not arrive is resent by
+the same round-based retry. Two nodes with different pacing settings — including
+different settings per direction of the exchange — therefore interoperate without
+restriction.
 
 Through the same beacon nodes use to announce themselves on the network, each
 node shares its version number with neighbors — the app's own version and,

@@ -1,0 +1,131 @@
+<svg viewBox="0 0 1040 764" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', Helvetica, Arial, sans-serif">
+  <style>
+    .card { fill:#f7f8fa; stroke:#d7dbe0; }
+    .panel { fill:#ffffff; stroke:#d7dbe0; }
+    .box { fill:#ffffff; stroke:#c2c8d0; }
+    .box-dash { fill:#ffffff; stroke:#c2c8d0; stroke-dasharray:5 4; }
+    .hdr { fill:#2f6fed; font-weight:700; }
+    .title { fill:#3a4150; font-weight:700; }
+    .t { fill:#3a4150; }
+    .mono { fill:#0f766e; font-family:'Consolas','SF Mono',monospace; }
+    .note { fill:#5b6472; font-style:italic; }
+    .line { stroke:#14b8a6; fill:none; stroke-width:2; }
+    .arrowhead { fill:#14b8a6; }
+    @media (prefers-color-scheme: dark) {
+      .card { fill:#1b1e24; stroke:#383d46; }
+      .panel { fill:#1b1e24; stroke:#383d46; }
+      .box { fill:#22262e; stroke:#3c424c; }
+      .box-dash { fill:#22262e; stroke:#3c424c; stroke-dasharray:5 4; }
+      .hdr { fill:#4f8cff; }
+      .title { fill:#c7cdd6; }
+      .t { fill:#c7cdd6; }
+      .mono { fill:#5eead4; }
+      .note { fill:#9aa4b2; }
+      .line { stroke:#2dd4bf; }
+      .arrowhead { fill:#2dd4bf; }
+    }
+    text { font-size:14px; }
+  </style>
+
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" class="arrowhead"/>
+    </marker>
+  </defs>
+
+  <rect x="6" y="6" width="1028" height="752" rx="16" class="card" stroke-width="1.5"/>
+  <text x="520" y="34" text-anchor="middle" class="title" font-size="17">Каталог эхоконференций: глобальные + региональные, гео-фильтр подписки</text>
+
+  <!-- ================= Панель A: виды эх ================= -->
+  <rect x="24" y="56" width="324" height="484" rx="12" class="panel" stroke-width="1.5"/>
+  <text x="186" y="82" text-anchor="middle" class="hdr" font-size="15">Виды эхоконференций</text>
+
+  <rect x="40" y="100" width="292" height="150" rx="9" class="box"/>
+  <text x="56" y="124" class="title">Глобальные</text>
+  <text x="56" y="150" class="mono" font-size="13">SYS.ANNOUNCE · SYS.*</text>
+  <text x="56" y="172" class="mono" font-size="13">EN.TALK · RU.TALK</text>
+  <text x="56" y="192" class="t" font-size="12.5">(двусегментные — язык-префикс,</text>
+  <text x="56" y="210" class="t" font-size="12.5">не география)</text>
+  <text x="56" y="234" class="note" font-size="12.5">подписаны по умолчанию,</text>
+  <text x="56" y="250" class="note" font-size="12.5">несут все узлы</text>
+
+  <rect x="40" y="272" width="292" height="230" rx="9" class="box"/>
+  <text x="56" y="296" class="title">Региональные</text>
+  <text x="56" y="322" class="t" font-size="13">формат имени:</text>
+  <text x="56" y="342" class="mono" font-size="13">СТРАНА.РЕГИОН.ТЕМА</text>
+  <text x="56" y="374" class="mono" font-size="13">RU.MSK.TALK</text>
+  <text x="56" y="396" class="mono" font-size="13">RU.SPB.TALK</text>
+  <text x="56" y="418" class="mono" font-size="13">DE.BER.MEET</text>
+  <text x="56" y="450" class="note" font-size="12.5">2 гео-уровня — как echo-теги</text>
+  <text x="56" y="466" class="note" font-size="12.5">классического FidoNet;</text>
+  <text x="56" y="486" class="note" font-size="12.5">гео-метаданные хранит запись эхи</text>
+
+  <!-- ================= Панель B: подписка ================= -->
+  <rect x="360" y="56" width="352" height="484" rx="12" class="panel" stroke-width="1.5"/>
+  <text x="536" y="82" text-anchor="middle" class="hdr" font-size="15">Подписка — клавиша S, каскад в 2 запроса</text>
+
+  <rect x="376" y="98" width="320" height="96" rx="9" class="box"/>
+  <text x="392" y="120" class="title" font-size="13.5">1. Запрос оглавления</text>
+  <text x="392" y="142" class="mono" font-size="12">REQ_AREA_LIST {want: "geo_index"}</text>
+  <text x="392" y="164" class="t" font-size="12.5">страны → регионы, десятки коротких</text>
+  <text x="392" y="181" class="t" font-size="12.5">строк, БЕЗ имён региональных эх</text>
+
+  <line x1="536" y1="196" x2="536" y2="209" class="line" marker-end="url(#arrow)"/>
+  <text x="536" y="222" text-anchor="middle" class="t" font-size="12.5">выбор: Страна ▸ Регион (или «— все —»)</text>
+
+  <rect x="376" y="228" width="320" height="96" rx="9" class="box"/>
+  <text x="392" y="250" class="title" font-size="13.5">2. Запрос листа выбранного места</text>
+  <text x="392" y="272" class="mono" font-size="12">REQ_AREA_LIST {pick: {RU, MSK}}</text>
+  <text x="392" y="294" class="t" font-size="12.5">имена эх ТОЛЬКО этого места</text>
+  <text x="392" y="311" class="t" font-size="12.5">(регион пуст → вся страна)</text>
+
+  <line x1="536" y1="326" x2="536" y2="339" class="line" marker-end="url(#arrow)"/>
+  <text x="536" y="352" text-anchor="middle" class="t" font-size="12.5">отметить галочками → +AREA (%JOIN)</text>
+
+  <rect x="376" y="358" width="320" height="86" rx="9" class="box-dash"/>
+  <text x="536" y="382" text-anchor="middle" class="note" font-size="12.5">≈ 600 байт по LoRa независимо</text>
+  <text x="536" y="400" text-anchor="middle" class="note" font-size="12.5">от размера сети</text>
+  <text x="536" y="424" text-anchor="middle" class="note" font-size="12.5">(было ≈ 6 КБ на каталог из 200 эх)</text>
+
+  <text x="536" y="474" text-anchor="middle" class="t" font-size="12.5">глобальные эхи в диалоге не показываются —</text>
+  <text x="536" y="491" text-anchor="middle" class="t" font-size="12.5">они и так подписаны. Инфраструктурный узел</text>
+  <text x="536" y="508" text-anchor="middle" class="t" font-size="12.5">в одиночку браузит СВОЮ БД; плоский CLIENT</text>
+  <text x="536" y="525" text-anchor="middle" class="t" font-size="12.5">без хаба рядом — диалог заблокирован</text>
+
+  <!-- ================= Панель C: кто какой каталог несёт ================= -->
+  <rect x="724" y="56" width="292" height="484" rx="12" class="panel" stroke-width="1.5"/>
+  <text x="870" y="82" text-anchor="middle" class="hdr" font-size="15">Кто какой каталог несёт</text>
+
+  <rect x="740" y="100" width="260" height="96" rx="9" class="box"/>
+  <text x="756" y="122" class="title" font-size="13.5">Узел / хаб С интернетом</text>
+  <text x="756" y="146" class="t" font-size="12.5">отдаёт и реплицирует</text>
+  <text x="756" y="164" class="t" font-size="12.5">ВЕСЬ каталог — все регионы</text>
+  <text x="756" y="184" class="note" font-size="12">echo_regions = None (фильтр off)</text>
+
+  <rect x="740" y="216" width="260" height="120" rx="9" class="box"/>
+  <text x="756" y="238" class="title" font-size="13.5">LoRa-only узел</text>
+  <text x="756" y="262" class="t" font-size="12.5">global + свои регионы из</text>
+  <text x="756" y="280" class="mono" font-size="12">config.json → echo_regions</text>
+  <text x="756" y="298" class="t" font-size="12.5">(шаг мастера первого запуска)</text>
+  <text x="756" y="322" class="note" font-size="12">пусто → только global-эхи</text>
+
+  <rect x="740" y="356" width="260" height="96" rx="9" class="box"/>
+  <text x="756" y="378" class="title" font-size="13.5">CLIENT_BASE без интернета</text>
+  <text x="756" y="402" class="t" font-size="12.5">полная репликация только</text>
+  <text x="756" y="420" class="t" font-size="12.5">своего региона + global</text>
+  <text x="756" y="440" class="note" font-size="12">на что подписан — тоже тянется</text>
+
+  <text x="870" y="480" text-anchor="middle" class="note" font-size="12">далёкий регион доступен только</text>
+  <text x="870" y="496" text-anchor="middle" class="note" font-size="12">у хаба, который эти эхи несёт</text>
+  <text x="870" y="512" text-anchor="middle" class="note" font-size="12">(обычно — хаб с интернетом)</text>
+
+  <!-- ================= Нижняя плашка: создание эх ================= -->
+  <rect x="24" y="556" width="992" height="192" rx="12" class="box" stroke-width="1.5"/>
+  <text x="44" y="582" class="hdr" font-size="15">Создание эхоконференции — не из диалога S</text>
+  <text x="44" y="610" class="t">Из диалога подписки создать эху нельзя — пользователь <tspan class="title">ТОЛЬКО подписывается</tspan>.</text>
+  <text x="44" y="636" class="t">Новая эха: подписанная заявка личным письмом (NETMAIL) на корневой узел → ручное одобрение оператором →</text>
+  <text x="44" y="662" class="t">подписанная запись расходится по сети обычной синхронизацией. AreaFix-сервер отдаёт в каталоге только</text>
+  <text x="44" y="688" class="t">одобренные эхи; приватные локальные эхи в общий каталог не попадают.</text>
+  <text x="44" y="716" class="t">Модерация (заморозка эхи, отзыв сообщения, блок автора) — такими же root-подписанными записями,</text>
+  <text x="44" y="738" class="t">применяются при получении; физического удаления нет. <tspan class="note">[в разработке]</tspan></text>
+</svg>
