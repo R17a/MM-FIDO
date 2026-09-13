@@ -51,6 +51,11 @@ A decentralized offline echo-conference network (in the spirit of Fidonet and th
     <td><img src="https://cdn-icons-png.flaticon.com/128/7383/7383117.png" alt="DOGE" width="30" height="30"></td>
     <td>DRWiaueKWB5uJQNsxWVomDfnEvthRtfYpm</td>
   </tr>
+  <tr>
+    <td>CloudTips</td>
+    <td><img src="https://play-lh.googleusercontent.com/k8-ieIBWYGW4J1cS1332b7UT_igt5xxMNkrGQ7gFoEGzFNaA0LqZBWIUqyGw3g3a3NkpqyH6q6USmkGzQYxMRw=w240-h480-rw" alt="CloudTips" width="30" height="30"></td>
+    <td><a href="https://pay.cloudtips.ru/p/dcbf5f2e" target="_blank">CloudTips</a></td>
+  </tr>  
 </table>
 
 <hr>
