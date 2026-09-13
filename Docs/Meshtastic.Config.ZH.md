@@ -5,8 +5,58 @@
 
 大多数键由**首次运行向导**设置。向导只在第一次启动时出现（当 `config.json` 里还没有
 语言时），此后不会自行再打开——它是一个一次性界面，包含姓名、语言、设备、历史深度
-（`replication_period`）和地区（`echo_regions`）字段。要在之后修改其中任何一个键，请在
+（`replication_period`）字段。要在之后修改其中任何一个键，请在
 **程序关闭时**手动编辑 `config.json`（程序运行时所做的修改会在下一次保存设置时被覆盖）。
+
+## 所有键一览
+
+「默认」= 该键完全不在 `config.json` 中时的行为。几乎每个键都有可用的默认值——文件可以
+保持最小：凡是取值等于其默认值的键，都可以从文件中删除，行为不变。唯一没有默认值的键是
+`language`：没有它，首次运行设置向导会启动。每个键的细节和注意事项见下面各节。
+
+**部分键程序会自己写回**——从手工精简的文件中删除它们只是暂时的：
+- `mock_mode`、`device`、`mock_role`、`mock_has_internet` —— 每次成功连接真实设备板时
+  （保存实际检测到的角色/NodeID，让文件反映现实而非向导默认值）；
+- `theme` —— F8 切换时；`tree_mode` —— F4 时；`taglines` —— 在 F3 中编辑时；
+  `terms_accepted` —— 在「网络政策」界面；`country` —— 根据设备板频率区域自动填充时。
+其余的程序不会碰。
+
+| 键 | 默认（无此键时） | 取值 / 类型 |
+|---|---|---|
+| `language` | —（启动向导） | `ru` / `en` / `zh` |
+| `first_name` | `""` | 字符串 |
+| `last_name` | `""` | 字符串 |
+| `taglines` | `[]` | 字符串列表 |
+| `tree_mode` | `true` | `true` / `false` |
+| `theme` | `textual-light` | `textual-light` / `textual-dark` |
+| `terms_accepted` | `false` | `true` / `false`（在「网络政策」界面设置） |
+| `mock_mode` | `false` | `true` / `false` |
+| `connection_type` | `serial` | `serial` / `ble` / `tcp` |
+| `ble_address` | `""` | 设备板 MAC 地址（仅在 `connection_type: "ble"` 时） |
+| `tcp_host` | `""` | `主机` 或 `主机:端口`（仅在 `connection_type: "tcp"` 时） |
+| `log_level` | `DEBUG`（临时，直到首个发布版） | `DEBUG` / `INFO` / `WARNING` |
+| `radio_watchdog_enabled` | `false` | `true` / `false` |
+| `radio_fragment_pacing` | `auto` | `auto` / `batch` / `sequential`（`auto` 自选：有 MQTT 时用 `batch`，仅 LoRa 时用 `sequential`） |
+| `radio_sequential_window_enabled` | `false` | `true` / `false`（仅在 `radio_fragment_pacing: "sequential"` 时生效） |
+| `radio_batch_sync_enabled` | `false` | `true` / `false` |
+| `radio_mtu_bytes` | `200` | 整数，字节 |
+| `replication_period` | `week` | `all` / `year` / `month` / `week` / `day` |
+| `echo_regions` | 无此键 → 不应用过滤；向导写入 `[]` → 仅全局信区 | `"国家"` / `"国家.地区"` 的列表 |
+| `hidden_areas` | `[]`（什么都不隐藏） | EchoID 或尾部通配（`"DE.*"`）的列表 |
+| `hub_hide_cached_areas` | `true` | `true` / `false` |
+| `new_mail_announce_enabled` | `true` | `true` / `false` |
+| `internet_sync_enabled` | `true` | `true` / `false` |
+| `internet_direct_dht_enabled` | `true` | `true` / `false` |
+| `internet_direct_relay_enabled` | `true` | `true` / `false` |
+| `lan_discovery_enabled` | `true` | `true` / `false` |
+| `upnp_port_mapping_enabled` | `true` | `true` / `false` |
+| `mqtt_bridge_enabled` | `true` | `true` / `false` |
+| `mqtt_channel_filter_enabled` | `false` | `true` / `false` |
+| `mqtt_direct_channel_bridge_enabled` | `true` | `true` / `false` |
+| `mqtt_keepalive_seconds` | `60` | 整数，秒 |
+| `mqtt_outgoing_publish_pace_seconds` | `0.2` | 数字，秒 |
+| `country` | 无此键（自动填入） | ISO-2（`RU`、`DE`、`US`……） |
+| `firmware` | `meshtastic` | `meshtastic` / `meshcore` |
 
 ## 个人数据 / 界面
 
@@ -36,26 +86,29 @@
 - `log_level` —— `DEBUG`/`INFO`/`WARNING` 等。在 `DEBUG` 下，`Logs/` 中的日志文件名会变得
   有含义——携带节奏模式和互联网同步标记；其他级别下文件名固定（`mm-fido.log`）。
   **这是唯一影响日志文件名的键**——如果日志名字看不懂，先看这里。
-  后缀解读：开头的 `internet_` —— 曾开启 `internet_sync_enabled`；`sequential_A` /
-  `sequential_B` —— 分别对应 `radio_sequential_window_enabled` 为 `false`/`true`；`batch`
-  —— `radio_fragment_pacing == "batch"`（见下文）。
+  后缀解读：开头的 `internet_` —— 曾开启 `internet_sync_enabled`；`auto` —— 未设或为
+  `"auto"`（运行时实际选了哪种模式见日志正文「pacing auto → …」一行）；`sequential_A` /
+  `sequential_B` —— 显式 `sequential` 且 `radio_sequential_window_enabled` 为 `false`/`true`；
+  `batch` —— 显式 `batch`。
 - `radio_watchdog_enabled` —— 对卡死的设备板接口进行诊断和自动恢复；默认关闭，做现场测试
   时手动开启。如果重连过程本身长时间（约 6 分钟）无响应而卡住——程序以代码 `90` 退出，
   期待外部启动器重启它（Linux 上 `run.sh` 会按此代码自动重启）。
 
 ## 无线电：分片节奏与批量同步（现场测试试验场）
 
-- `radio_fragment_pacing` —— `"sequential"`（默认）或 `"batch"`：逐个等待每个分片的确认，
-  还是一次性发送/确认整轮。
-- `radio_sequential_window_enabled` —— 仅在 `radio_fragment_pacing="sequential"` 时：
-  `false` —— 严格只有一个分片在途（`sequential_A`），`true` —— 窗口内多个同时在途
-  （`sequential_B`）。
-- **该设什么：**
-  - `sequential_B`（`radio_fragment_pacing="sequential"` + `radio_sequential_window_enabled=true`）
-    —— LoRa 推荐的默认模式：几乎和 `batch` 一样快，但更能容忍丢包。
-  - `batch` —— 当设备板确知靠近且信号强时：往返次数最少，现场约 3–4 分钟对 6–8 分钟。
-    信道差时突发模式丢得更多。
-  - `sequential_A` —— 用于非常边缘的链路（距离、遮挡）：一次一个分片，稳健性最高，但慢。
+- `radio_fragment_pacing` —— `"auto"`（默认）、`"batch"` 或 `"sequential"`：一次性发送/
+  确认整轮分片，还是逐个等待每个分片的确认。
+  - **`auto`** —— 每次发送时自选：**MQTT 在工作**（桥已连上 broker，每个分片能快速得到
+    确认）→ `batch`；**仅 LoRa** → `sequential`，一次一个分片，不开窗口。这几乎总是对的：
+    在纯 LoRa 上邮件量大时用 `batch` 会淹没信道和设备板。
+  - 显式的 `batch` / `sequential` —— 强制覆盖（用于现场 A/B 测试）。
+- `radio_sequential_window_enabled` —— 仅在显式 `radio_fragment_pacing="sequential"` 时：
+  `false`（默认）—— 严格只有一个分片在途（`sequential_A`），`true` —— 窗口内多个同时
+  在途（`sequential_B`）。auto 模式不开窗口。
+- **手动选择（若非 `auto`）：**
+  - `batch` —— 当设备板确知靠近、信号强且有 MQTT 时：往返次数最少。信道差 / 无 MQTT 时
+    突发模式丢得更多。
+  - `sequential`（窗口 `false`）—— 一次一个分片：在弱/拥挤信道上稳健性最高，但慢。
   - 双方可以运行不同模式——这不妨碍交换（见下文「模式兼容性」）。
 - `radio_batch_sync_enabled` —— 对一轮中所有尚未轮询的信区发一个同步请求，而不是每个信区
   一个（批量勘测）；默认 `false`。
@@ -73,7 +126,7 @@
 ## 已复制历史的深度
 
 - `replication_period` —— 往这个节点拉多少信区历史：
-  `"all"`（默认——不限制）、`"year"`、`"month"`、`"day"`。
+  `"all"`（不限制）、`"year"`、`"month"`、`"week"`（默认）、`"day"`。
   **这是一个滑动窗口：**「现在 − 周期」的边界在每次交换时重新计算，随时钟向前移动。选择
   「过去一个月」——节点始终收到最近 30 天；新信件照常到达（发布时它总在窗口内），只有比
   周期更旧的历史被截断。这与「最后已知之后的一切」这种增量补收是**不同的轴**。
@@ -96,15 +149,14 @@
   - 地理信区命名为 `<国家>.<地区>.<主题>`（`RU.MSK.TALK`）；归属由名称确定。
   - **仅当节点没有互联网时生效**（与 `replication_period` 相同的判据）。有互联网的
     节点/HUB 携带并提供整个目录。
-  - `[]`（走完向导，未给地区）→ 仅全局信区。完全没有此键（旧配置）→ 不应用过滤，
-    像以前一样返回完整列表。
+  - `[]`（走完向导，未给地区——向导总是写入这个值）→ 仅全局信区。完全没有此键
+    （旧配置）→ 不应用过滤，像以前一样返回完整列表。
   - 邮件轮询会自动把所有本地已订阅的地区信区的地区加到配置里的 `echo_regions` 上——
-    订阅了什么就同步什么。
-  - 订阅对话框（`S`）不碰这个键：它从 HUB 的「索引」中选择国家 → 地区，并订阅勾选的
-    信区（两次短请求代替完整列表——节省 LoRa）。
-  **如何设置：** 在首次运行向导中——一个文本字段，地区以空格分隔（`RU.MSK RU.SPB`；
-  逗号/`;` 也接受）。向导在首次启动时显示一次；之后要改——在程序关闭时手动编辑
-  `config.json`。
+    订阅了什么就同步什么，即使地区没有手动写进配置。
+  - 订阅对话框（`S`）从 HUB 的「索引」中选择国家 → 地区，并订阅勾选的信区（两次短
+    请求代替完整列表——节省 LoRa）。
+  **如何设置：** 首次运行向导不再询问此键（总是写入 `[]`）——地区在订阅对话框（`S`）
+  中选择。要显式列出地区，请在程序关闭时手动编辑 `config.json`。
 
 ## 从列表中隐藏的信区
 
@@ -126,6 +178,19 @@
     `CLIENT_BASE` 上，该信区会在下一次 discover 时回来——这正是需要此过滤的原因）。
     在 `config.json` 中手动编辑，没有向导步骤（首次启动时还没有可隐藏的东西）。
 
+- `hub_hide_cached_areas` —— 默认 `true`。与 `hidden_areas`（手动列表）分开：在基础设施
+  节点上，凡是**不是**操作员自己订阅、而是通过完整目录复制或收到消息时自动创建而出现的
+  信区，会立即从列表中隐藏，无需逐一列出。设为 `false` 可以看到它们——例如调试时，用来
+  确认节点确实在缓存其他节点的信区。在普通 `CLIENT` 上无效（那里本来也只有自己的订阅）。
+  接收、复制以及在目录中的提供都不受此标志影响。
+
+## 通知
+
+- `new_mail_announce_enabled` —— 默认 `true`。当某个信区出现新信件（用户所写或由邻居
+  推送而来）时，节点会在几秒后发送**一条**简短的服务通知，列出这些信区——让邻居前来
+  同步，不必等自己的计划轮询。`false` —— 不发送该通知（信件本身和同步照常工作）。不涉及
+  私信（NETMAIL）——它按地址投递。
+
 ## DHT/Relay（互联网）
 
 DHT/Relay 是通过互联网寻找对端的路径，独立于 LoRa 和 MQTT。它由两个机制组成：带直连尝试
@@ -134,9 +199,9 @@ DHT/Relay 是通过互联网寻找对端的路径，独立于 LoRa 和 MQTT。�
 
 - `internet_sync_enabled` —— 整个 DHT/Relay 的总开关（既包括出站尝试，也包括通过中继
   接受他人连接）。`false` —— 节点只通过 LoRa/MQTT 工作。
-- `internet_sync_interval_connected_sec` —— 当已有本地 LoRa/MQTT 邻居时，多久（秒）尝试
-  一次 DHT/Relay（默认 900 = 15 分钟）。当节点完全孤立（根本没有邻居）时——它在每个
-  常规邮件轮询节拍上尝试，此键不生效。
+  多久尝试一次 DHT/Relay 不再由单独的键决定：现在第 2 层在每个邮件轮询周期结束时运行
+  （每 60 秒一次）。旧键 `internet_sync_interval_connected_sec` 不再被读取——如果它还
+  留在旧的 `config.json` 里，可以删掉，它没有任何作用。
 - `internet_direct_dht_enabled` —— 默认 `true`。`false` —— 完全跳过 DHT 和直连尝试，
   直接转到 Relay。用于单独测试 Relay 而不用 DHT。
 - `internet_direct_relay_enabled` —— 默认 `true`。`false` —— 根本不尝试 Relay，即使 DHT
@@ -149,8 +214,10 @@ DHT/Relay 是通过互联网寻找对端的路径，独立于 LoRa 和 MQTT。�
   ——省去为直连 DHT 手动配置路由器，与 BT 客户端自动开端口是同一协议。仅对基础设施角色
   （只有端口上有东西在监听时转发才有意义）。尽力而为：如果路由器上的 UPnP 关闭/不支持
   ——静默地什么都不做。`false` —— 完全不尝试（例如路由器要求手动批准 UPnP 请求时）。
-- `relay_target_node_id` —— 可选的用于中继的特定节点 id，**添加**到自动发现的列表
-  （不替换它）——用于覆盖/测试特定的一对节点。
+
+中继服务器地址不是配置键——它内置在程序中。通过中继连到哪个节点由节点自己确定（它向
+中继询问当前有谁注册）。要开关中继路径，用上面的 `internet_direct_relay_enabled`（或
+总的 `internet_sync_enabled`）。
 
 ## MQTT 桥
 
@@ -159,9 +226,23 @@ DHT/Relay 是通过互联网寻找对端的路径，独立于 LoRa 和 MQTT。�
   而不必到每台设备的 Meshtastic 应用里去。
 - `mqtt_channel_filter_enabled` —— 默认 `false`；`true` 只把这块设备板上实际配置的信道的
   流量转发到设备板并记录日志（而不是整个区域 broker）。
+- `mqtt_direct_channel_bridge_enabled` —— 默认 `true`。两座城市之间通过共享 MQTT 主题
+  直接桥接普通信道的终止开关。`false` —— 不启动信道桥；通过「Meshtastic-FIDO」MQTT
+  主题的 FIDO 信件交换不受影响。
 - `mqtt_keepalive_seconds` —— 默认 `60`（已知可用值）。此键的存在是为了不改代码就能测试
   中间值（45/30）。在 Windows 上较小的值曾与接收崩溃同时出现（入站消息归零，不恢复）
   ——如果 MQTT 接收停止且不回来，把它设回 `60`。
 - `mqtt_outgoing_publish_pace_seconds` —— 默认 `0.2`。发布「Meshtastic-FIDO」信道同一帧
   连续分片之间的停顿。没有它，分片会无间隔地成串进入 MQTT——在不稳定的路径上（手机
   热点）除第一个外的每个分片都稳定丢失。这是一个时序延迟，不是 ACK 超时。
+
+## 网络遥测
+
+可选键。**不影响**节点的工作——只影响中继服务器统计、并在项目网站上展示的全网汇总
+数据（有多少节点、来自哪里）。
+
+- `country` —— ISO-2 国家代码（`"RU"`、`"DE"`、`"US"`）。首次连接设备板时，若其频率
+  区域明确对应某一个国家，则自动填入。仅当基于 IP 的推断会出错（节点在 VPN 后 / 在
+  VPS 上），或设备板的区域比国家更宽时，才需要手动设置。
+- `firmware` —— 节点固件类型：`"meshtastic"`（默认）或 `"meshcore"`。目前仅支持
+  Meshtastic，此键为提前预留。
