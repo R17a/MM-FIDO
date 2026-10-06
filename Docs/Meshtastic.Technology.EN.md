@@ -163,6 +163,19 @@ replicated earlier and is now temporarily offline can serve it just as well.
   other through the bridge, regardless of everything else (but they'll still
   find each other via DHT/Relay below — slower than a direct bridge, but
   without this manual setup).
+- **The catalog geo-filter (`echo_regions` in `config.json`) limits what
+  actually REACHES a city, not just what the subscribe dialog shows.** A
+  `CLIENT_BASE` hub WITHOUT internet only auto-mirrors echoes from its own
+  region + global ones — it never downloaded a foreign-region echo and
+  physically cannot hand it to a migrating client, even if that client is
+  personally subscribed to it back home. A hub WITH internet has no such
+  restriction — it carries the full catalog, specifically to cover this case.
+  So the chain above works for ANY city only if at least one node along the
+  path (home, an intermediate city, or the visited location) either has
+  internet or is already configured for that echo's region. Purely LoRa-only
+  regions with no internet-connected hub between them fall outside this
+  guarantee — a deliberate trade-off so an ordinary regional LoRa hub doesn't
+  download and rebroadcast the whole world's mail over the air.
 
 ### Fallback path for nodes without a shared MQTT channel — DHT discovery and relay
 The MQTT bridge above needs manual upfront setup — both CLIENT_BASE nodes have
@@ -196,6 +209,11 @@ address ends up being the VPN server's, not the one the node actually
 listens on, and the direct connection may fail or be slower. It's best to
 turn VPN off for the duration of field tests of this path; radio and the
 MQTT bridge aren't affected by it.
+
+**Two nodes behind the same router** (the same external IP) do not find each other over DHT — the
+app discards addresses that match its own external IP. To test this path the nodes must be on
+different networks (for example, one on a mobile hotspot). While radio or the MQTT bridge works,
+the internet path carries no traffic — it is for those they do not connect.
 
 This path doesn't replace the MQTT bridge (that one serves a different
 purpose — routine exchange between cities that have already arranged to work
@@ -243,7 +261,7 @@ determines the node's behavior in the network:
 ### Echo-area catalog: geography of subscription
 
 Echo areas are either **global** or **regional**. Global ones — `SYS.*` and
-the language areas (`RU.TALK`, `EN.TALK`) — are subscribed by everyone by
+the language areas (`RU.TALK`, `EN.TALK`, `ZH.TALK`) — are subscribed by everyone by
 default and held on every node. Regional ones are named
 `<COUNTRY>.<REGION>.<TOPIC>` (`RU.MSK.TALK`, `DE.BER.MEET`) — two geographic
 levels, roughly like the echo tags of classic FidoNet. The geographic scope
@@ -270,14 +288,39 @@ echoes, plus whatever it has subscribed to by hand. To subscribe to a distant
 region you need a hub that actually carries those echoes (usually an internet
 hub): a hub of your own region simply doesn't store them over radio.
 
-**An echo area cannot be created from the subscribe dialog** — the user only
-subscribes. Creating a new echo is a separate process with manual approval by
-the root node's operator: a signed request travels by personal mail (NETMAIL)
-to the root node, the operator approves or rejects it, and the signed record
-spreads across the network by ordinary sync; only approved echoes make it
-into the shared catalog. The same signed-record mechanism drives moderation
-(freeze an echo, retract a message, block an author) — applied on receipt,
-with no physical deletion. This process is in progress.
+**An echo area cannot be created from the subscribe dialog** — the user only subscribes;
+a request is filed separately (see below).
+
+#### Echo life cycle: creation and moderation
+
+The network is **closed**: only the **base echoes** (`RU.TALK`, `EN.TALK`, `ZH.TALK`) and echoes
+**approved by the root node** enter the catalog and are accepted. Unapproved ones (including
+echoes created only locally) do not spread through hubs.
+
+**How a new echo appears**
+1. A participant presses `E` ("request a new echo") and enters a name, title and description.
+   The request goes to the root node as a personal message (NETMAIL). On Android: the "Echoes"
+   tab → "Request echo".
+2. The root operator presses `M`, sees the request and approves or rejects it.
+3. The decision is a record signed with the root's secret key. It spreads by ordinary sync; every
+   node holds the root's public key and checks the signature itself — an approval cannot be forged.
+
+**Echo moderator.** The author of an approved request automatically becomes the moderator of their
+echo. In it they can: retract a message (`Ctrl+R`, press again to restore), retract a message with
+all its replies (`Ctrl+X`), punish an author (`Ctrl+B`). The moderator signs
+their actions with their own app key; they apply only in their echo. The root can do the same in
+every echo, and can also freeze an echo (new messages are refused, reading still works), remove it
+from the network, and appoint or dismiss a moderator (`Ctrl+O` on the author's message, `M` →
+"Dismiss moderators").
+
+**Punishing authors:** a warning, a ban, or "lift punishments". A warning and a ban can have a term
+in days — when it ends, the punishment is lifted by itself (no term — permanent). **Two active
+warnings = a ban**, which lasts while both are active. A punishment applies only in the echo where
+it was issued: a banned author can neither write nor reply there (their client refuses, and other
+nodes do not accept such messages in that echo), while other echoes and private mail work as usual.
+
+Nothing is deleted physically: a retracted message stays on the nodes but is marked `[RETRACTED]`
+and its text is hidden. All actions are signed records applied on receipt; the latest one wins.
 
 ![Echo-area catalog: global and regional echoes, geo-filtered subscription, echo creation via the operator](images/Meshtastic/catalog-geo.EN.svg)
 
@@ -452,3 +495,17 @@ Separately, the app also records each node's board "fingerprint" (the
 Meshtastic firmware's hardware key) and logs it if it changes — a reflash,
 factory reset, or spoof; the change is accepted automatically and does not
 block the network.
+
+---
+
+## 5. Android client (mmFIDO)
+
+A separate phone app: it connects to the Meshtastic board over Bluetooth (BLE) and works with the same
+network and echoes as the Windows/Linux client. It can:
+- read echoes and discussion threads, write new messages and reply;
+- private mail (NETMAIL) with encryption, and signature checks (`[UNVERIFIED]`);
+- request a new echo and, if you were appointed a moderator, retract messages and block authors.
+
+Messages are signed with a key created on the phone. Anything written offline is stored on the phone
+and sent to the hub on the next connection. The hub is reached over LoRa, MQTT and the internet at once;
+a hub (a Windows/Linux node) must be within reach of the board or on the internet.

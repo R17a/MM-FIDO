@@ -143,22 +143,28 @@ Everything else the program leaves alone.
 
 ## Depth of replicated history
 
-- `replication_period` — how much echo-area history to pull onto this node:
-  `"all"` (no limit), `"year"`, `"month"`, `"week"` (default), `"day"`.
-  **This is a SLIDING window:** the "now − period" boundary is recomputed on every exchange
-  and moves forward with the clock. Pick "month" — the node always receives the last 30 days;
-  new mail arrives as usual (it is always inside the window at the moment it is posted), only
-  history older than the period is cut off. This is a DIFFERENT axis than the incremental
-  catch-up of "everything after the last known one".
-  **Applies ONLY when the node has no internet access.** A node with internet gets no window
-  — bandwidth is not the problem, and if it is a `CLIENT_BASE`, its clients would otherwise
-  miss history the node trimmed from itself. Internet discovery (DHT/Relay) never applies the
-  window either. **Personal mail (NETMAIL) is exempt** — it does not "go stale". Messages
-  already stored locally are not deleted — widen the period and the next exchange pulls the
-  rest.
-  **How it is set:** ONLY in the first-run wizard — a dropdown "Echo-area history depth"
-  (options "All" → `all` default, "Past year" → `year`, "Past month" → `month`, "Past day"
-  → `day`). The wizard does not reopen — to change the period after the first launch you can
+- `replication_period` — default history depth for echoes that don't have their own (see
+  below): `"all"` (no limit), `"year"`, `"month"`, `"week"` (default), `"day"`.
+  **The window is ONE-SHOT, not a forever-sliding window:** it only limits the FIRST
+  successful backfill of a given echo — how much history to grab on first contact with it.
+  Once that backfill has succeeded once (the hub answered), the window turns off for that
+  echo for good — from then on all new mail arrives regardless of age, via the usual
+  incremental catch-up of "everything after the last known one". Messages already stored
+  locally are never deleted.
+  **Applies ONLY when the node has no internet access AND its role is not a hub** (see role
+  note below). A node with internet gets no window — bandwidth is not the problem. Internet
+  discovery (DHT/Relay) never applies the window either. **Personal mail (NETMAIL) is
+  exempt** — it does not "go stale".
+  **Hubs (`CLIENT_BASE`/`ROUTER`/…) never get a window at all**, even without internet: a hub
+  is the very storage its `CLIENT` nodes later pull from — it cannot trim its own history, or
+  its clients would miss what the hub itself never kept.
+  **Its own depth for ONE specific echo** — set when subscribing (`S`, the Subscribe dialog):
+  a "History depth" dropdown next to the place's echo list, applies only to the echoes being
+  subscribed to right now. On a LoRa-only node the list is automatically shortened to
+  `"week"` and stricter (no "Past month"/"Past year"/"All") — the same cap also applies to
+  the default value below, even if set by hand in `config.json`.
+  **How the default is set:** in the first-run wizard — a dropdown "Echo-area history depth"
+  (default "Past week" → `week`). The wizard does not reopen — to change it later you can
   only edit `config.json` by hand while the program is closed.
 
 ## Echo-area catalog geo-filter
@@ -296,3 +302,17 @@ site shows.
   VPS) or the board's region is wider than a country.
 - `firmware` — the node's firmware type: `"meshtastic"` (default) or `"meshcore"`. Only
   Meshtastic is supported so far; the key is reserved ahead of time.
+
+## Echoes: requests, approval and moderation
+
+There are no `config.json` parameters for this — everything is done with keys:
+
+- `E` on the main screen — request a new echo (sent to the root node as a personal message).
+- `M` — echo management, root node only: requests (approve/reject), freeze, remove,
+  "Approve all existing", "Dismiss moderators".
+- In the reader: `Ctrl+R` — retract/restore a message, `Ctrl+X` — retract a message with all its replies,
+  `Ctrl+B` — punish the author: warning, ban, or lift punishments (a term in days is optional;
+  two warnings = a ban; applies only in this echo). Available to the root and to the moderator of that echo.
+  `Ctrl+O` — appoint/dismiss the author as moderator (root only).
+- The network is closed: only the base echoes (`RU.TALK`, `EN.TALK`, `ZH.TALK`) and echoes approved by
+  the root enter the catalog and are accepted.
