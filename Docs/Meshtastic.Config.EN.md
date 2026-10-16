@@ -42,7 +42,7 @@ Everything else the program leaves alone.
 | `connection_type` | `serial` | `serial` / `ble` / `tcp` |
 | `ble_address` | `""` | board MAC address (only with `connection_type: "ble"`) |
 | `tcp_host` | `""` | `host` or `host:port` (only with `connection_type: "tcp"`) |
-| `log_level` | `DEBUG` (temporary, until the first release) | `DEBUG` / `INFO` / `WARNING` |
+| `log_level` | `INFO` (switch to `DEBUG` only while debugging) | `DEBUG` / `INFO` / `WARNING` |
 | `radio_watchdog_enabled` | `false` | `true` / `false` |
 | `radio_fragment_pacing` | `auto` | `auto` / `batch` / `sequential` (`auto` picks: `batch` when MQTT is up, `sequential` on LoRa-only) |
 | `radio_sequential_window_enabled` | `false` | `true` / `false` (only with `radio_fragment_pacing: "sequential"`) |
@@ -308,11 +308,8 @@ site shows.
 There are no `config.json` parameters for this — everything is done with keys:
 
 - `E` on the main screen — request a new echo (sent to the root node as a personal message).
-- `M` — echo management, root node only: requests (approve/reject), freeze, remove,
-  "Approve all existing", "Dismiss moderators".
 - In the reader: `Ctrl+R` — retract/restore a message, `Ctrl+X` — retract a message with all its replies,
   `Ctrl+B` — punish the author: warning, ban, or lift punishments (a term in days is optional;
-  two warnings = a ban; applies only in this echo). Available to the root and to the moderator of that echo.
-  `Ctrl+O` — appoint/dismiss the author as moderator (root only).
+  two warnings = a ban; applies only in this echo). Available to the moderator of that echo.
 - The network is closed: only the base echoes (`RU.TALK`, `EN.TALK`, `ZH.TALK`) and echoes approved by
   the root enter the catalog and are accepted.

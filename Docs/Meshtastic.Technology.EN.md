@@ -212,14 +212,26 @@ MQTT bridge aren't affected by it.
 
 **Two nodes behind the same router** (the same external IP) do not find each other over DHT — the
 app discards addresses that match its own external IP. To test this path the nodes must be on
-different networks (for example, one on a mobile hotspot). While radio or the MQTT bridge works,
-the internet path carries no traffic — it is for those they do not connect.
+different networks (for example, one on a mobile hotspot).
+
+**The layers work simultaneously and independently.** As long as the internet layer is not switched off
+in the settings, DHT and the relay always run — an active MQTT does not turn them off. People use
+different MQTT brokers, so DHT and the relay are what let nodes see each other. The internet-layer cycle
+repeats by itself once a minute, without waiting for the radio mail poll to finish. The only exception:
+a node already in live contact over radio or MQTT is not duplicated over the relay.
 
 This path doesn't replace the MQTT bridge (that one serves a different
 purpose — routine exchange between cities that have already arranged to work
 together) and needs no manual setup from a regular user — given internet
 access, it works automatically in the background, as an extra way to find
 correspondents beyond direct radio range.
+
+**"New mail" over the internet.** The radio announcement of a new message is heard only by nodes on the same LoRa
+frequency and (through MQTT) on the same broker. So that nodes in another city or country do not wait for the timer
+poll, the relay has a notification channel: every node keeps an open, signed connection to the relay, and a node that
+got something new tells the relay the echo names; the relay forwards them to the other open connections. Only echo
+names are sent, never message content. On receipt the node polls the hub right away in the usual way (relay/DHT).
+If the relay is old and cannot do this, nodes stay on timer polling. Works regardless of MQTT and the LoRa frequency.
 
 ### Local-network discovery — no internet needed at all
 Separate from the DHT/relay path above (both need an internet connection),
@@ -301,7 +313,7 @@ echoes created only locally) do not spread through hubs.
 1. A participant presses `E` ("request a new echo") and enters a name, title and description.
    The request goes to the root node as a personal message (NETMAIL). On Android: the "Echoes"
    tab → "Request echo".
-2. The root operator presses `M`, sees the request and approves or rejects it.
+2. The root operator sees the request and approves or rejects it.
 3. The decision is a record signed with the root's secret key. It spreads by ordinary sync; every
    node holds the root's public key and checks the signature itself — an approval cannot be forged.
 
@@ -310,8 +322,7 @@ echo. In it they can: retract a message (`Ctrl+R`, press again to restore), retr
 all its replies (`Ctrl+X`), punish an author (`Ctrl+B`). The moderator signs
 their actions with their own app key; they apply only in their echo. The root can do the same in
 every echo, and can also freeze an echo (new messages are refused, reading still works), remove it
-from the network, and appoint or dismiss a moderator (`Ctrl+O` on the author's message, `M` →
-"Dismiss moderators").
+from the network, and appoint or dismiss a moderator.
 
 **Punishing authors:** a warning, a ban, or "lift punishments". A warning and a ban can have a term
 in days — when it ends, the punishment is lifted by itself (no term — permanent). **Two active
@@ -495,6 +506,17 @@ Separately, the app also records each node's board "fingerprint" (the
 Meshtastic firmware's hardware key) and logs it if it changes — a reflash,
 factory reset, or spoof; the change is accepted automatically and does not
 block the network.
+
+### Advertising
+
+An ad is shown at the bottom of the main screen and of the message list; if there is no ad for the node, the
+banner is not shown. Ads are signed by the network root key (like the other network decisions), so they
+cannot be forged. Three kinds: **global** — everyone; **regional** — by country (e.g. `RU`, `IT`); **city** — e.g.
+`RU.IRK`. Regional and city ads are shown only inside an echo with that geography: in `RU.MSK.TALK` — ads for country `RU`
+and city `RU.MSK`, in `RU.SPB.TALK` — country `RU` only (language echoes such as `RU.TALK` have no geography);
+the main screen shows global ads only. If several ads fit, they rotate; each has a display period in days. The banner is turned off only
+by a root decision (for project supporters): the node sends the root its application key (key `I`), and only its hash
+goes into the network. Only the root publishes ads and turns the banner off.
 
 ---
 

@@ -34,7 +34,7 @@
 | `connection_type` | `serial` | `serial` / `ble` / `tcp` |
 | `ble_address` | `""` | 设备板 MAC 地址（仅在 `connection_type: "ble"` 时） |
 | `tcp_host` | `""` | `主机` 或 `主机:端口`（仅在 `connection_type: "tcp"` 时） |
-| `log_level` | `DEBUG`（临时，直到首个发布版） | `DEBUG` / `INFO` / `WARNING` |
+| `log_level` | `INFO`（仅调试时才改为 `DEBUG`） | `DEBUG` / `INFO` / `WARNING` |
 | `radio_watchdog_enabled` | `false` | `true` / `false` |
 | `radio_fragment_pacing` | `auto` | `auto` / `batch` / `sequential`（`auto` 自选：有 MQTT 时用 `batch`，仅 LoRa 时用 `sequential`） |
 | `radio_sequential_window_enabled` | `false` | `true` / `false`（仅在 `radio_fragment_pacing: "sequential"` 时生效） |
@@ -258,9 +258,7 @@ DHT/Relay 是通过互联网寻找对端的路径，独立于 LoRa 和 MQTT。�
 `config.json` 中没有对应参数——全部通过按键完成：
 
 - 主界面按 `E` —— 申请新讨论区（以私信发送给 root 节点）。
-- `M` —— 讨论区管理，仅限 root 节点：申请（批准/拒绝）、冻结、移除、“批准所有现有讨论区”、
-  “撤销版主”。
 - 阅读界面：`Ctrl+R` —— 撤回/恢复消息，`Ctrl+X` —— 撤回消息及其全部回复，`Ctrl+B` —— 处罚作者：
-  警告、封禁或解除处罚（可选天数期限；两次警告 = 封禁；仅在本讨论区有效）。root 和该讨论区的版主可用。`Ctrl+O` —— 任命/撤销作者为版主（仅限 root）。
+  警告、封禁或解除处罚（可选天数期限；两次警告 = 封禁；仅在本讨论区有效）。该讨论区的版主可用。
 - 网络是封闭的：只有基础讨论区（`RU.TALK`、`EN.TALK`、`ZH.TALK`）和经 root 批准的讨论区才会进入目录
   并被接收。
