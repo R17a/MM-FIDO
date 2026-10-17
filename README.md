@@ -77,29 +77,10 @@ A decentralized offline echo-conference network (in the spirit of Fidonet and th
 
 ## Скачать · Download · 下载
 
-| | |
-|---|---|
-| **Windows** (portable, без установки) | [Client.Windows.Portable.zip](https://github.com/R17a/MM-FIDO/raw/main/Clients/Client.Windows.Portable.zip) |
-| **Linux** (portable, без установки) | [Client.Linux.Portable.zip](https://github.com/R17a/MM-FIDO/raw/main/Clients/Client.Linux.Portable.zip) |
+| Платформа · Platform · 平台 | Скачать · Download · 下载 |
+|:---|:---|
+| 🪟 **Windows**<br>portable, без установки<br>portable, no installation<br>便携版，无需安装 | [**Client.Windows.Portable.zip**](https://github.com/R17a/MM-FIDO/raw/main/Clients/Client.Windows.Portable.zip) |
+| 🐧 **Linux**<br>portable, без установки<br>portable, no installation<br>便携版，无需安装 | [**Client.Linux.Portable.zip**](https://github.com/R17a/MM-FIDO/raw/main/Clients/Client.Linux.Portable.zip) |
+| 🤖 **Android**<br>Google Play | <a href="https://play.google.com/store/apps/details?id=com.rapo.mmfido"><img alt="Get it on Google Play" src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" height="70"></a> |
 
-Все архивы лежат в папке [Clients](https://github.com/R17a/MM-FIDO/tree/main/Clients) этого репозитория. Android — в Google Play:
-
-<a href="https://play.google.com/store/apps/details?id=com.rapo.mmfido"><img alt="Доступно в Google Play" src="https://play.google.com/intl/en_us/badges/static/images/badges/ru_badge_web_generic.png" height="80"></a>
-
-| | |
-|---|---|
-| **Windows** (portable, no installation) | [Client.Windows.Portable.zip](https://github.com/R17a/MM-FIDO/raw/main/Clients/Client.Windows.Portable.zip) |
-| **Linux** (portable, no installation) | [Client.Linux.Portable.zip](https://github.com/R17a/MM-FIDO/raw/main/Clients/Client.Linux.Portable.zip) |
-
-All archives are in the [Clients](https://github.com/R17a/MM-FIDO/tree/main/Clients) folder of this repository. Android — on Google Play:
-
-<a href="https://play.google.com/store/apps/details?id=com.rapo.mmfido"><img alt="Get it on Google Play" src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" height="80"></a>
-
-| | |
-|---|---|
-| **Windows**（便携版，无需安装） | [Client.Windows.Portable.zip](https://github.com/R17a/MM-FIDO/raw/main/Clients/Client.Windows.Portable.zip) |
-| **Linux**（便携版，无需安装） | [Client.Linux.Portable.zip](https://github.com/R17a/MM-FIDO/raw/main/Clients/Client.Linux.Portable.zip) |
-
-所有压缩包都在本仓库的 [Clients](https://github.com/R17a/MM-FIDO/tree/main/Clients) 文件夹中。Android 版本请在 Google Play 获取：
-
-<a href="https://play.google.com/store/apps/details?id=com.rapo.mmfido"><img alt="在 Google Play 上获取" src="https://play.google.com/intl/en_us/badges/static/images/badges/zh-cn_badge_web_generic.png" height="80"></a>
+Все архивы · All archives · 所有压缩包: [Clients](https://github.com/R17a/MM-FIDO/tree/main/Clients)
