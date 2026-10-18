@@ -34,7 +34,7 @@
 | `connection_type` | `serial` | `serial` / `ble` / `tcp` |
 | `ble_address` | `""` | 设备板 MAC 地址（仅在 `connection_type: "ble"` 时） |
 | `tcp_host` | `""` | `主机` 或 `主机:端口`（仅在 `connection_type: "tcp"` 时） |
-| `log_level` | `INFO`（仅调试时才改为 `DEBUG`） | `DEBUG` / `INFO` / `WARNING` |
+| `log_level` | `WARNING`（仅调试时才改为 `INFO`/`DEBUG`） | `DEBUG` / `INFO` / `WARNING` |
 | `radio_watchdog_enabled` | `false` | `true` / `false` |
 | `radio_fragment_pacing` | `auto` | `auto` / `batch` / `sequential`（`auto` 自选：有 MQTT 时用 `batch`，仅 LoRa 时用 `sequential`） |
 | `radio_sequential_window_enabled` | `false` | `true` / `false`（仅在 `radio_fragment_pacing: "sequential"` 时生效） |
@@ -83,7 +83,7 @@
 
 ## 诊断 / 无线电
 
-- `log_level` —— `DEBUG`/`INFO`/`WARNING` 等。在 `DEBUG` 下，`Logs/` 中的日志文件名会变得
+- `log_level` —— `WARNING`（默认：仅警告和错误）、`INFO`（另含常规事件，日志明显更大）、`DEBUG`（全部）。在 `DEBUG` 下，`Logs/` 中的日志文件名会变得
   有含义——携带节奏模式和互联网同步标记；其他级别下文件名固定（`mm-fido.log`）。
   **这是唯一影响日志文件名的键**——如果日志名字看不懂，先看这里。
   后缀解读：开头的 `internet_` —— 曾开启 `internet_sync_enabled`；`auto` —— 未设或为

@@ -43,7 +43,7 @@
 | `connection_type` | `serial` | `serial` / `ble` / `tcp` |
 | `ble_address` | `""` | MAC-адрес платы (только при `connection_type: "ble"`) |
 | `tcp_host` | `""` | `хост` или `хост:порт` (только при `connection_type: "tcp"`) |
-| `log_level` | `INFO` (`DEBUG` включают только на время отладки) | `DEBUG` / `INFO` / `WARNING` |
+| `log_level` | `WARNING` (`INFO`/`DEBUG` включают только на время отладки) | `DEBUG` / `INFO` / `WARNING` |
 | `radio_watchdog_enabled` | `false` | `true` / `false` |
 | `radio_fragment_pacing` | `auto` | `auto` / `batch` / `sequential` (`auto` сам выбирает: `batch` при работающем MQTT, `sequential` при чистом LoRa) |
 | `radio_sequential_window_enabled` | `false` | `true` / `false` (действует только при `radio_fragment_pacing: "sequential"`) |
@@ -94,7 +94,7 @@
 
 ## Диагностика / радио
 
-- `log_level` — `DEBUG`/`INFO`/`WARNING` и т.п. На `DEBUG` имя лог-файла в `Logs/` становится
+- `log_level` — `WARNING` (по умолчанию: только предупреждения и ошибки), `INFO` (плюс обычные события, лог заметно больше), `DEBUG` (всё). На `DEBUG` имя лог-файла в `Logs/` становится
   говорящим — несёт режим пейсинга и признак интернет-синхронизации; на остальных уровнях
   имя фиксированное (`mm-fido.log`). **Это единственный ключ, влияющий на имя лог-файла** —
   если лог называется непонятно, смотри сюда первым делом.

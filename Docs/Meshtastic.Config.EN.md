@@ -42,7 +42,7 @@ Everything else the program leaves alone.
 | `connection_type` | `serial` | `serial` / `ble` / `tcp` |
 | `ble_address` | `""` | board MAC address (only with `connection_type: "ble"`) |
 | `tcp_host` | `""` | `host` or `host:port` (only with `connection_type: "tcp"`) |
-| `log_level` | `INFO` (switch to `DEBUG` only while debugging) | `DEBUG` / `INFO` / `WARNING` |
+| `log_level` | `WARNING` (switch to `INFO`/`DEBUG` only while debugging) | `DEBUG` / `INFO` / `WARNING` |
 | `radio_watchdog_enabled` | `false` | `true` / `false` |
 | `radio_fragment_pacing` | `auto` | `auto` / `batch` / `sequential` (`auto` picks: `batch` when MQTT is up, `sequential` on LoRa-only) |
 | `radio_sequential_window_enabled` | `false` | `true` / `false` (only with `radio_fragment_pacing: "sequential"`) |
@@ -92,7 +92,7 @@ Everything else the program leaves alone.
 
 ## Diagnostics / radio
 
-- `log_level` — `DEBUG`/`INFO`/`WARNING` etc. At `DEBUG` the log file name in `Logs/` becomes
+- `log_level` — `WARNING` (default: warnings and errors only), `INFO` (plus regular events, a much larger log), `DEBUG` (everything). At `DEBUG` the log file name in `Logs/` becomes
   descriptive — it carries the pacing mode and an internet-sync marker; at other levels the
   name is fixed (`mm-fido.log`). **This is the only key that affects the log file name** — if
   a log is named oddly, look here first.
