@@ -1,0 +1,77 @@
+Meshtastic/MeshCore - FIDO (MM-FIDO) License
+Copyright (c) 2026 Dmitriy Petrov (R17a). All rights reserved.
+
+================================ ENGLISH ================================
+
+1. Use. You may use the software free of charge, for personal and
+   non-commercial purposes.
+
+2. No sale. You may not sell, rent, sublicense or otherwise charge for the
+   software or any copy of it, modified or not, and may not include it in a
+   paid product or service.
+
+3. No decompilation. You may not decompile, disassemble, reverse-engineer or
+   otherwise attempt to extract the source code of compiled parts of the
+   software (including files with the .pyd, .so and .exe extensions).
+
+4. Modifications. Where parts of the software are supplied as readable
+   Python code, you may modify them for your own use only. You may not
+   distribute modified versions or present them as the official software.
+
+5. Changes are made centrally. All improvements, fixes and proposals are
+   accepted and applied only by the author, through issues on the official
+   GitHub repository. By submitting a proposal you allow the author to use it
+   in the software without restriction and without compensation.
+
+6. Trademark and name. The names "Meshtastic/MeshCore - FIDO", "MM-FIDO" and
+   "Meshtastic-FIDO" may not be used for unofficial versions.
+
+7. No warranty. The software is provided "as is", without warranty of any
+   kind. The author is not liable for any damage arising from its use.
+
+8. Termination. Any breach of this license terminates your rights under it.
+
+================================ РУССКИЙ ================================
+
+1. Использование. Программу можно использовать бесплатно, в личных и
+   некоммерческих целях.
+
+2. Продажа запрещена. Нельзя продавать, сдавать в аренду, сублицензировать
+   программу или её копии (изменённые или нет), а также включать её в
+   платный продукт или услугу.
+
+3. Декомпиляция запрещена. Нельзя декомпилировать, дизассемблировать,
+   изучать с целью восстановления исходного кода скомпилированные части
+   программы (в том числе файлы .pyd, .so, .exe).
+
+4. Правки. Части, поставляемые в виде читаемого Python-кода, можно изменять
+   только для собственного использования. Нельзя распространять изменённые
+   версии и выдавать их за официальную программу.
+
+5. Правки вносятся централизованно. Все улучшения, исправления и
+   предложения принимаются и вносятся только автором через обращения (issues)
+   на официальном GitHub-репозитории. Отправляя предложение, вы разрешаете
+   автору использовать его в программе без ограничений и вознаграждения.
+
+6. Название. Названия «Meshtastic/MeshCore - FIDO», «MM-FIDO» и
+   «Meshtastic-FIDO» нельзя использовать для неофициальных версий.
+
+7. Без гарантий. Программа предоставляется «как есть», без каких-либо
+   гарантий. Автор не отвечает за ущерб от её использования.
+
+8. Прекращение. При нарушении лицензии ваши права по ней прекращаются.
+
+================================= 中文 ==================================
+
+1. 使用:允许免费用于个人和非商业目的。
+2. 禁止销售:不得销售、出租、转授权本软件或其副本(无论是否修改),
+   也不得将其纳入付费产品或服务。
+3. 禁止反编译:不得反编译、反汇编或以任何方式试图还原软件编译部分
+   (包括 .pyd、.so、.exe 文件)的源代码。
+4. 修改:以可读 Python 代码形式提供的部分,仅可为自己使用而修改;
+   不得分发修改版本,也不得将其冒充为官方软件。
+5. 集中修改:所有改进、修复和建议仅由作者通过官方 GitHub 仓库的
+   issues 接收并实施。提交建议即表示您允许作者无限制、无偿地在软件中使用。
+6. 名称:"Meshtastic/MeshCore - FIDO"、"MM-FIDO" 和 "Meshtastic-FIDO" 不得用于非官方版本。
+7. 无担保:软件按"原样"提供,不附带任何担保;作者不对使用造成的损害负责。
+8. 终止:违反本许可将导致您的相关权利终止。
