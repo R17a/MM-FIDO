@@ -4,7 +4,9 @@ Copyright (c) 2026 Dmitriy Petrov (R17a). All rights reserved.
 ================================ ENGLISH ================================
 
 1. Use. You may use the software free of charge, for personal and
-   non-commercial purposes.
+   non-commercial purposes. "The software" means all MM-FIDO clients: the
+   Windows and Linux programs and the Android app mmFIDO (from Google Play
+   or as an .apk file).
 
 2. No sale. You may not sell, rent, sublicense or otherwise charge for the
    software or any copy of it, modified or not, and may not include it in a
@@ -12,7 +14,8 @@ Copyright (c) 2026 Dmitriy Petrov (R17a). All rights reserved.
 
 3. No decompilation. You may not decompile, disassemble, reverse-engineer or
    otherwise attempt to extract the source code of compiled parts of the
-   software (including files with the .pyd, .so and .exe extensions).
+   software (including files with the .pyd, .so, .exe, .apk and .aab
+   extensions).
 
 4. Modifications. Where parts of the software are supplied as readable
    Python code, you may modify them for your own use only. You may not
@@ -31,10 +34,16 @@ Copyright (c) 2026 Dmitriy Petrov (R17a). All rights reserved.
 
 8. Termination. Any breach of this license terminates your rights under it.
 
+9. Acceptance. By pressing "Accept" on the first start of the program, or
+   by installing or using it, you agree to this License and to the Network
+   Policy shown in the program.
+
 ================================ РУССКИЙ ================================
 
 1. Использование. Программу можно использовать бесплатно, в личных и
-   некоммерческих целях.
+   некоммерческих целях. «Программа» — все клиенты MM-FIDO: программы для
+   Windows и Linux и приложение mmFIDO для Android (из Google Play или
+   файлом .apk).
 
 2. Продажа запрещена. Нельзя продавать, сдавать в аренду, сублицензировать
    программу или её копии (изменённые или нет), а также включать её в
@@ -42,7 +51,7 @@ Copyright (c) 2026 Dmitriy Petrov (R17a). All rights reserved.
 
 3. Декомпиляция запрещена. Нельзя декомпилировать, дизассемблировать,
    изучать с целью восстановления исходного кода скомпилированные части
-   программы (в том числе файлы .pyd, .so, .exe).
+   программы (в том числе файлы .pyd, .so, .exe, .apk, .aab).
 
 4. Правки. Части, поставляемые в виде читаемого Python-кода, можно изменять
    только для собственного использования. Нельзя распространять изменённые
@@ -61,13 +70,18 @@ Copyright (c) 2026 Dmitriy Petrov (R17a). All rights reserved.
 
 8. Прекращение. При нарушении лицензии ваши права по ней прекращаются.
 
+9. Принятие. Нажимая «Принять» при первом запуске программы либо
+   устанавливая или используя её, вы соглашаетесь с этой Лицензией и с
+   Политикой сети, показанной в программе.
+
 ================================= 中文 ==================================
 
-1. 使用:允许免费用于个人和非商业目的。
+1. 使用:允许免费用于个人和非商业目的。"本软件"指 MM-FIDO 的所有客户端:
+   Windows 和 Linux 程序以及 Android 应用 mmFIDO(来自 Google Play 或 .apk 文件)。
 2. 禁止销售:不得销售、出租、转授权本软件或其副本(无论是否修改),
    也不得将其纳入付费产品或服务。
 3. 禁止反编译:不得反编译、反汇编或以任何方式试图还原软件编译部分
-   (包括 .pyd、.so、.exe 文件)的源代码。
+   (包括 .pyd、.so、.exe、.apk、.aab 文件)的源代码。
 4. 修改:以可读 Python 代码形式提供的部分,仅可为自己使用而修改;
    不得分发修改版本,也不得将其冒充为官方软件。
 5. 集中修改:所有改进、修复和建议仅由作者通过官方 GitHub 仓库的
@@ -75,3 +89,4 @@ Copyright (c) 2026 Dmitriy Petrov (R17a). All rights reserved.
 6. 名称:"Meshtastic/MeshCore - FIDO"、"MM-FIDO" 和 "Meshtastic-FIDO" 不得用于非官方版本。
 7. 无担保:软件按"原样"提供,不附带任何担保;作者不对使用造成的损害负责。
 8. 终止:违反本许可将导致您的相关权利终止。
+9. 接受:在程序首次启动时点击"接受",或安装、使用本软件,即表示您同意本许可以及程序中显示的网络政策。
