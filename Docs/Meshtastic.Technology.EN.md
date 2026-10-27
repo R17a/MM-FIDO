@@ -492,6 +492,15 @@ later mismatch, the key is not silently overwritten — the same fundamental
 trade-off any TOFU scheme makes (the impersonation risk exists only at the
 very first encounter between two nodes).
 
+Limits of encryption. Only the BODY of a letter is encrypted, and only when
+the sender already knows the recipient's key. The key is learned from a
+letter received from that correspondent, so the first letter of a pair
+(before the correspondent has sent anything) goes out in plain text and a
+hub on its path can read it; the reply and later letters are encrypted.
+"New" letters without a specific recipient (`to_node="*"`) and the service
+commands `%JOIN`/`%LEAVE` are always sent in plain text. Metadata (sender,
+recipient, subject, time) is never encrypted — every node on the path sees it.
+
 The same application key signs not just the messages but also the presence
 beacon (the one that feeds the **F6** neighbor list: "node is here", hub
 status, version numbers). That signature is checked on every transport — over
