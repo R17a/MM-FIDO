@@ -25,7 +25,7 @@ temporary:
   to a real board (it saves the role/NodeID actually detected, so the file reflects reality
   rather than the wizard default);
 - `theme` — on the F8 toggle; `tree_mode` — on F4; `taglines` — when edited in F3;
-  `terms_accepted` — on the "Network policy" screen; `country` — when auto-filled from the
+  `terms_accepted` and `license_accepted` — on the "Network policy" screen; `country` — when auto-filled from the
   board's frequency region.
 Everything else the program leaves alone.
 
@@ -38,6 +38,7 @@ Everything else the program leaves alone.
 | `tree_mode` | `true` | `true` / `false` |
 | `theme` | `textual-light` | `textual-light` / `textual-dark` |
 | `terms_accepted` | `false` | `true` / `false` (set on the "Network policy" screen) |
+| `license_accepted` | `""` | License edition accepted on the "Network policy" screen (a date, e.g. `2026-10-27`); if it differs from the current one, the screen is shown again |
 | `mock_mode` | `false` | `true` / `false` |
 | `connection_type` | `serial` | `serial` / `ble` / `tcp` |
 | `ble_address` | `""` | board MAC address (only with `connection_type: "ble"`) |

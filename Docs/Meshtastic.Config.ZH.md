@@ -18,7 +18,7 @@
 - `mock_mode`、`device`、`mock_role`、`mock_has_internet` —— 每次成功连接真实设备板时
   （保存实际检测到的角色/NodeID，让文件反映现实而非向导默认值）；
 - `theme` —— F8 切换时；`tree_mode` —— F4 时；`taglines` —— 在 F3 中编辑时；
-  `terms_accepted` —— 在「网络政策」界面；`country` —— 根据设备板频率区域自动填充时。
+  `terms_accepted` 和 `license_accepted` —— 在「网络政策」界面；`country` —— 根据设备板频率区域自动填充时。
 其余的程序不会碰。
 
 | 键 | 默认（无此键时） | 取值 / 类型 |
@@ -30,6 +30,7 @@
 | `tree_mode` | `true` | `true` / `false` |
 | `theme` | `textual-light` | `textual-light` / `textual-dark` |
 | `terms_accepted` | `false` | `true` / `false`（在「网络政策」界面设置） |
+| `license_accepted` | `""` | 在「网络政策」界面接受的许可版本（日期，如 `2026-10-27`）；与当前版本不一致时，该界面会再次显示 |
 | `mock_mode` | `false` | `true` / `false` |
 | `connection_type` | `serial` | `serial` / `ble` / `tcp` |
 | `ble_address` | `""` | 设备板 MAC 地址（仅在 `connection_type: "ble"` 时） |
